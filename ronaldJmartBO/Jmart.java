@@ -11,7 +11,7 @@ public class Jmart
 {
     public static void main(String[] args) {
         int before = 10000;
-        int after = 5000;
+        int after = 7000;
         
         System.out.println("Promo = " + getPromo());
         System.out.println("Customer = " + getCustomer());
@@ -51,7 +51,7 @@ public class Jmart
     }
     
     public static int getOriginalPrice(int discountedPrice, float discountPercentage) {
-        return (int)(discountedPrice / (discountPercentage / 100));
+        return (int)(discountedPrice * 100 / (100 - discountPercentage));
     }
     
     public static float getCommissionMultiplier() {
