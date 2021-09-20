@@ -10,7 +10,7 @@ package ronaldJmartBO;
 public class Jmart
 {
     public static void main(String[] args) {
-        create();
+        // create();
         // int before = 10000;
         // int after = 7000;
         
@@ -30,6 +30,18 @@ public class Jmart
         
         // Product product = new Product("PS4", false, priceTag, category);
         return new Product("PS4", 4, false, new PriceTag(10000, 50), ProductCategory.GAMING);
+    }
+    
+    public static Product createProduct(){
+        return new Product("PS4", 4, false, new PriceTag(10000, 50), ProductCategory.GAMING);
+    }
+    
+    public static Coupon createCoupon(){
+        return new Coupon("Coupon 1", 1, Type.DISCOUNT, 20.5, 20000);
+    }
+    
+    public static ShipmentDuration createShipmentDuration(){
+        return null;
     }
     
     // public static int getPromo() {
