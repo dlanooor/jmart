@@ -16,10 +16,6 @@ public class ShipmentDuration
     public static final ShipmentDuration KARGO = new ShipmentDuration(0b00010000);
     private int bit;
     
-    public static void main(String[] args) {
-        System.out.println(ShipmentDuration.INSTANT);
-    }
-    
     public ShipmentDuration(int bit) {
         this.bit = bit;
     }
