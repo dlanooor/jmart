@@ -2,7 +2,7 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class ProductRating here.
+ * Product Rating
  *
  * @author Ronald Grant
  * @version 18 September 2021

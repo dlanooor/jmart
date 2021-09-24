@@ -2,7 +2,7 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class Product here.
+ * Pembuatan Produk.    
  *
  * @author Ronald Grant
  * @version 18 September 2021

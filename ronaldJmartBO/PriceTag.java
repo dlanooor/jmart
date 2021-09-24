@@ -2,7 +2,7 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class PriceTag here.
+ * Price Tag
  *
  * @author Ronald Grant
  * @version 18 September 2021
@@ -35,7 +35,7 @@ public class PriceTag
             return BOTTOM_FEE;
         }
         else {
-            return price * COMMISSION_MULTIPLIER;
+            return getDiscountedPrice() * COMMISSION_MULTIPLIER;
         }
     }
     

@@ -2,10 +2,10 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class Coupon here.
+ * Pembuatan Kupon
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Ronald Grant
+ * @version 18 Sept 2021
  */
 public class Coupon
 {

@@ -2,10 +2,10 @@ package ronaldJmartBO;
 
 
 /**
- * Enumeration class Type - write a description of the enum class here
+ * Enumeration class Type
  *
- * @author (your name here)
- * @version (version number or date here)
+ * @author Ronald Grant
+ * @version 18 Sept 2021
  */
 public enum Type
 {

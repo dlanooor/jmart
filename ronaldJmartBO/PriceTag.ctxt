@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=PriceTag
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ PriceTag\ here.\r\n\r\n\ @author\ Ronald\ Grant\r\n\ @version\ 18\ September\ 2021\r\n
+comment0.text=\r\n\ Price\ Tag\r\n\r\n\ @author\ Ronald\ Grant\r\n\ @version\ 18\ September\ 2021\r\n
 comment1.params=price
 comment1.target=PriceTag(double)
 comment2.params=price\ discount

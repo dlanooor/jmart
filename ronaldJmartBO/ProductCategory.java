@@ -2,10 +2,10 @@ package ronaldJmartBO;
 
 
 /**
- * Enumeration class ProductCategory - write a description of the enum class here
+ * Category ENUM
  *
- * @author (your name here)
- * @version (version number or date here)
+ * @author Ronald Grant
+ * @version 18 Sept 2021
  */
 public enum ProductCategory
 {
