@@ -10,9 +10,9 @@ package ronaldJmartBO;
 public class Jmart
 {
     public static void main(String[] args) {
-        createProduct();
-        createCoupon();
-        createShipmentDuration();
+        // createProduct();
+        // createCoupon();
+        // createShipmentDuration();
         // create();
         // int before = 10000;
         // int after = 7000;
@@ -27,25 +27,25 @@ public class Jmart
         // System.out.println("Admin Fee = " + getAdminFee(getDiscountedPrice(before, getDiscountPercentage(before, after))));
     }
     
-    public static Product create() {
-        // ProductCategory category = ProductCategory.GAMING;
-        // PriceTag priceTag = new PriceTag(10000, 50);
+    // public static Product create() {
+        // // ProductCategory category = ProductCategory.GAMING;
+        // // PriceTag priceTag = new PriceTag(10000, 50);
         
-        // Product product = new Product("PS4", false, priceTag, category);
-        return new Product("PS4", 4, false, new PriceTag(10000, 50), ProductCategory.GAMING);
-    }
+        // // Product product = new Product("PS4", false, priceTag, category);
+        // return new Product("PS4", 4, false, new PriceTag(10000, 50), ProductCategory.GAMING);
+    // }
     
-    public static Product createProduct(){
-        return new Product("PS5", 4, false, new PriceTag(20000, 50), ProductCategory.GAMING);
-    }
+    // public static Product createProduct(){
+        // return new Product("PS5", 4, false, new PriceTag(20000, 50), ProductCategory.GAMING);
+    // }
     
-    public static Coupon createCoupon(){
-        return new Coupon("Coupon 1", 1, Type.DISCOUNT, 20.5, 20000);
-    }
+    // public static Coupon createCoupon(){
+        // return new Coupon("Coupon 1", 1, Type.DISCOUNT, 20.5, 20000);
+    // }
     
-    public static ShipmentDuration createShipmentDuration(){
-        return new ShipmentDuration(ShipmentDuration.KARGO, ShipmentDuration.REGULER);
-    }
+    // public static ShipmentDuration createShipmentDuration(){
+        // return new ShipmentDuration(ShipmentDuration.KARGO, ShipmentDuration.REGULER);
+    // }
     
     // public static int getPromo() {
         // return 0;
