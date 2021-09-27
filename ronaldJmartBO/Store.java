@@ -2,10 +2,10 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class Store here.
+ * Store
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Ronald Grant
+ * @version 27 Sept 2021
  */
 public class Store extends Recognizable implements FileParser
 {
@@ -27,6 +27,12 @@ public class Store extends Recognizable implements FileParser
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+    
+    public String toString() {
+        return  "name: " + name +
+                "\naddress: " + address +
+                "\nphoneNumber: " + phoneNumber;
     }
     
     @Override

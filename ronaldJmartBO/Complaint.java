@@ -7,20 +7,29 @@ package ronaldJmartBO;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Complaint extends Transaction implements FileParser
+// public class Complaint extends Transaction implements FileParser
+public class Complaint extends Recognizable implements FileParser
 {
-    public int paymentId;
+    // public int paymentId;
+    // public String desc;
+    
+    public String date;
     public String desc;
     
-    public Complaint(int id, Payment payment, String desc) {
-        super(id, payment.buyerId, payment.storeId);
-        paymentId = payment.id;
-        this.desc = desc;
-    }
+    // public Complaint(int id, Payment payment, String desc) {
+        // super(id, payment.buyerId, payment.storeId);
+        // paymentId = payment.id;
+        // this.desc = desc;
+    // }
     
-    public Complaint(int id, int buyerId, int storeId, int paymentId, String desc) {
-        super(id, buyerId, storeId);
-        this.paymentId = paymentId;
+    // public Complaint(int id, int buyerId, int storeId, int paymentId, String desc) {
+        // super(id, buyerId, storeId);
+        // this.paymentId = paymentId;
+        // this.desc = desc;
+    // }
+    
+    public Complaint(int id, String desc) {
+        super(id);
         this.desc = desc;
     }
     

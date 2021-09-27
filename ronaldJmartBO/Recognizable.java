@@ -2,7 +2,7 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class Recognizable here.
+ * Recognizable
  *
  * @author Ronald Grant
  * @version 25 Sept 2021

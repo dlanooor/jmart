@@ -2,10 +2,10 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class Account here.
+ * Account
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Ronald Grant
+ * @version 27 Sept 2021
  */
 public class Account extends Recognizable implements FileParser
 {
@@ -18,6 +18,12 @@ public class Account extends Recognizable implements FileParser
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+    
+    public String toString() {
+        return  "name: " + name +
+                "\nemail: " + email +
+                "\npassword: " + password;
     }
     
     @Override

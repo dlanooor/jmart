@@ -2,10 +2,10 @@ package ronaldJmartBO;
 
 
 /**
- * Abstract class Transaction - write a description of the class here
+ * Abstract Transaksi
  *
- * @author (your name here)
- * @version (version number or date here)
+ * @author Ronald Grant
+ * @version 27 Sept 2021
  */
 public abstract class Transaction extends Recognizable
 {
