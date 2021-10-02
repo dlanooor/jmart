@@ -1,5 +1,7 @@
 package ronaldJmartBO;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Store
@@ -12,6 +14,8 @@ public class Store extends Recognizable implements FileParser
     public String name;
     public String address;
     public String phoneNumber;
+    public static final String REGEX_PHONE = "^[0-9]{9,12}\b";
+    public static final String REGEX_NAME = "^[A-Z][a-z\\sa-z]{4,20}\b";
     
     public Store(int accountId, String name, String address, String phoneNumber)
     {
@@ -33,6 +37,16 @@ public class Store extends Recognizable implements FileParser
         return  "name: " + name +
                 "\naddress: " + address +
                 "\nphoneNumber: " + phoneNumber;
+    }
+    
+    public boolean validate() {
+        Pattern patternPhone = Pattern.compile(REGEX_PHONE);
+        Matcher matcherPhone = patternPhone.matcher(phoneNumber);
+        
+        Pattern patternName = Pattern.compile(REGEX_NAME);
+        Matcher matcherName = patternName.matcher(name);
+        
+        return matcherPhone.find() && matcherName.find();
     }
     
     @Override

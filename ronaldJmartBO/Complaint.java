@@ -2,18 +2,21 @@ package ronaldJmartBO;
 
 
 /**
- * Write a description of class Complaint here.
+ * Class Complaint
  *
  * @author (your name)
  * @version (a version number or a date)
  */
+
+import java.util.Date;
+
 // public class Complaint extends Transaction implements FileParser
 public class Complaint extends Recognizable implements FileParser
 {
     // public int paymentId;
     // public String desc;
     
-    public String date;
+    public Date date;
     public String desc;
     
     // public Complaint(int id, Payment payment, String desc) {
@@ -30,6 +33,7 @@ public class Complaint extends Recognizable implements FileParser
     
     public Complaint(int id, String desc) {
         super(id);
+        date = new Date();
         this.desc = desc;
     }
     

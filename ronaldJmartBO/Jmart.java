@@ -1,5 +1,6 @@
 package ronaldJmartBO;
 
+import java.util.ArrayList;
 
 /**
  * Aplikasi Jmart
@@ -10,7 +11,6 @@ package ronaldJmartBO;
 public class Jmart
 {
     public static void main(String[] args) {
-        // createProduct();
         // createCoupon();
         // createShipmentDuration();
         // create();

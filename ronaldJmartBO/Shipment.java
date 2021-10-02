@@ -7,6 +7,10 @@ package ronaldJmartBO;
  * @author Ronald Grant
  * @version 27 Sept 2021
  */
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Shipment implements FileParser
 {
     public String address;
@@ -21,6 +25,7 @@ public class Shipment implements FileParser
         public static final Duration NEXT_DAY = new Duration((byte)(1 << 2));
         public static final Duration REGULER = new Duration((byte)(1 << 3));
         public static final Duration KARGO = new Duration((byte)(1 << 4));
+        public static final SimpleDateFormat ESTIMATION_FORMAT = new SimpleDateFormat("EEE MMMM dd yyyy");
         public byte bit;
         
         // public static void main(String[] args){
@@ -29,6 +34,25 @@ public class Shipment implements FileParser
         
         private Duration(byte bit) {
             this.bit = bit;
+        }
+        
+        public String getEstimatedArrival(Date reference) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(reference);
+            
+            if(this.bit == Duration.INSTANT.bit)
+                cal.add(Calendar.DATE, 0);
+            else if(this.bit == Duration.SAME_DAY.bit)
+                cal.add(Calendar.DATE, 0);
+            else if(this.bit == Duration.NEXT_DAY.bit)
+                cal.add(Calendar.DATE, 1);
+            else if(this.bit == Duration.REGULER.bit)
+                cal.add(Calendar.DATE, 2);
+            else if(this.bit == Duration.KARGO.bit)
+                cal.add(Calendar.DATE, 5);
+                
+            String curr_date = ESTIMATION_FORMAT.format(cal);
+            return curr_date;
         }
         
         // private Duration(Duration... args) {
