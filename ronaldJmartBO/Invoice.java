@@ -9,6 +9,7 @@ package ronaldJmartBO;
  */
 
 import java.util.Date;
+import java.util.ArrayList;
 
 public abstract class Invoice extends Recognizable implements FileParser
 {
@@ -29,12 +30,19 @@ public abstract class Invoice extends Recognizable implements FileParser
         FAILED;
     }
     
+    public class Record {
+        public Status status;
+        public Date date;
+        public String message;
+    }
+    
     public Date date;
     public int buyerId;
     public int productId;
     public int complaintId;
     public Rating rating;
     public Status status;
+    public ArrayList<Record> history;
 
     protected Invoice(int id, int buyerId, int productId)
     {

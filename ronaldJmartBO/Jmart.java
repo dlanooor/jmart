@@ -11,6 +11,14 @@ import java.util.ArrayList;
 public class Jmart
 {
     public static void main(String[] args) {
+        Account accTest1 = new Account(1, "Supriyono Satu", "supriyono@ui.ac.id", "Supriyono123");
+        Account accTest2 = new Account(2, "Supriyono Dua", ".supriyono@ui.ac.id", "Supriyono123");
+        
+        System.out.println(accTest1.validate());
+        System.out.println(accTest2.validate());
+        
+        Complaint compTest1 = new Complaint(1, "Pengiriman tidak cepat, kurir tersesat");
+        System.out.println(compTest1);
         // createCoupon();
         // createShipmentDuration();
         // create();

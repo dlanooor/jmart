@@ -9,6 +9,7 @@ package ronaldJmartBO;
  */
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 // public class Complaint extends Transaction implements FileParser
 public class Complaint extends Recognizable implements FileParser
@@ -35,6 +36,12 @@ public class Complaint extends Recognizable implements FileParser
         super(id);
         date = new Date();
         this.desc = desc;
+    }
+    
+    @Override
+    public String toString() {
+        SimpleDateFormat formatDate = new SimpleDateFormat("MM/dd/yyyy");
+        return "Complaint{date=" + formatDate.format(date) + ",desc='" + desc + "'}";
     }
     
     @Override
