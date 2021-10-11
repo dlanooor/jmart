@@ -8,6 +8,56 @@ public class Algorithm {
     private Algorithm() {
     }
 
+    /* collect method */
+    public static <T> List<T> collect(T[] array, T value) {
+        List<T> list = Arrays.asList(array);
+        list.add(value);
+        return list;
+    }
+
+    public static <T> List<T> collect(Iterable<T> iterable, T value) {
+        List<T> list = new ArrayList<T>();
+        for (T item : iterable) {
+            list.add(item);
+        }
+
+        list.add(value);
+
+        return list;
+    }
+
+    public static <T> List<T> collect(Iterator<T> iterator, T value) {
+        Iterator<T> source = iterator;
+        List<T> target = new ArrayList<>();
+        source.forEachRemaining(target::add);
+        target.add(value);
+
+        return target;
+    }
+
+    public static <T> List<T> collect(T[] array, Predicate<T> pred) {
+        List<T> list = Arrays.asList(array);
+
+        return list;
+    }
+
+    public static <T> List<T> collect(Iterable<T> iterable, Predicate<T> pred) {
+        List<T> list = new ArrayList<T>();
+        for (T item : iterable) {
+            list.add(item);
+        }
+
+        return list;
+    }
+
+    public static <T> List<T> collect(Iterator<T> iterator, Predicate<T> pred) {
+        Iterator<T> source = iterator;
+        List<T> target = new ArrayList<>();
+        source.forEachRemaining(target::add);
+
+        return target;
+    }
+
     /* count method */
     public static<T> int count(T[] array, T value) {
         final Iterator<T> iter = Arrays.stream(array).iterator();
@@ -98,6 +148,7 @@ public class Algorithm {
         return find(iterator, pred);
     }
 
+    /* max method */
     public static <T extends Comparable<? super T>> T max(T first, T second) {
         if(first.compareTo(second) > 0)
             return first;
@@ -105,10 +156,169 @@ public class Algorithm {
             return second;
     }
 
+    public static <T extends Comparable<? super T>> T max(T[] array) {
+        T temp = null;
+
+        for(int i = 0; i < array.length; i++) {
+            if(array[i].compareTo(array[i+1]) > 0)
+                temp = array[i];
+            else
+                temp = array[i+1];
+        }
+
+        return temp;
+    }
+
+    public static <T extends Comparable<? super T>> T max(Iterable<T> iterable) {
+        final Iterator <T> iterator = iterable.iterator();
+
+        T max = null;
+        T temp = null;
+
+        while(iterator.hasNext()) {
+            if(max == null) {
+                max = iterator.next();
+            }
+            else {
+                temp = iterator.next();
+                if(temp.compareTo(max) > 0) {
+                    max = temp;
+                }
+            }
+        }
+
+        return max;
+    }
+
+    public static <T extends Comparable<? super T>> T max(Iterator<T> iterator) {
+        T max = null;
+        T temp = null;
+
+        while(iterator.hasNext()) {
+            if(max == null) {
+                max = iterator.next();
+            }
+            else {
+                temp = iterator.next();
+                if(temp.compareTo(max) > 0) {
+                    max = temp;
+                }
+            }
+        }
+
+        return max;
+    }
+
+    public static <T extends Comparable<? super T>> T max(T first, T second, Comparator<? super T> comparator) {
+        T[] array;
+        array = (T[]) new Comparable[]{first, second};
+        return Collections.max(Arrays.asList(array), comparator);
+    }
+
+    public static <T extends Comparable<? super T>> T max(T[] array, Comparator<? super T> comparator) {
+        return Collections.max(Arrays.asList(array), comparator);
+    }
+
+    public static <T extends Comparable<? super T>> T max(Iterable<T> iterable, Comparator<? super T> comparator) {
+//        return (T) Collections.max(iterable, comparator);
+        return null;
+    }
+
+    public static <T extends Comparable<? super T>> T max(Iterator<T> iterator, Comparator<? super T> comparator) {
+//        return (T) Collections.max(iterator, comparator);
+        return null;
+    }
+
+    /* min method */
     public static <T extends Comparable<? super T>> T min(T first, T second) {
-        if(first.compareTo(second) < 0)
+        if(first.compareTo(second) > 0)
             return first;
         else
             return second;
     }
+
+    public static <T extends Comparable<? super T>> T min(T[] array) {
+        T temp = null;
+
+        for(int i = 0; i < array.length; i++) {
+            if(array[i].compareTo(array[i+1]) < 0)
+            temp = array[i];
+            else
+            temp = array[i+1];
+        }
+
+        return temp;
+    }
+
+    public static <T extends Comparable<? super T>> T min(Iterable<T> iterable) {
+        final Iterator <T> iterator = iterable.iterator();
+
+        T min = null;
+        T temp = null;
+
+        while(iterator.hasNext()) {
+            if(min == null) {
+                min = iterator.next();
+            }
+            else {
+                temp = iterator.next();
+                if(temp.compareTo(min) < 0) {
+                    min = temp;
+                }
+            }
+        }
+
+        return min;
+    }
+
+    public static <T extends Comparable<? super T>> T min(Iterator<T> iterator) {
+        T min = null;
+        T temp = null;
+
+        while(iterator.hasNext()) {
+            if(min == null) {
+                min = iterator.next();
+            }
+            else {
+                temp = iterator.next();
+                if(temp.compareTo(min) < 0) {
+                    min = temp;
+                }
+            }
+        }
+
+        return min;
+    }
+
+    public static <T extends Comparable<? super T>> T min(T first, T second, Comparator<? super T> comparator) {
+        T[] array;
+        array = (T[]) new Comparable[]{first, second};
+        return Collections.min(Arrays.asList(array), comparator);
+    }
+
+    public static <T extends Comparable<? super T>> T min(T[] array, Comparator<? super T> comparator) {
+        return Collections.min(Arrays.asList(array), comparator);
+    }
+
+    public static <T extends Comparable<? super T>> T min(Iterable<T> iterable, Comparator<? super T> comparator) {
+        return null;
+    }
+
+    public static <T extends Comparable<? super T>> T min(Iterator<T> iterator, Comparator<? super T> comparator) {
+        return null;
+    }
+
+//    public static <T extends Comparable<? super T>> T max(T first, T second) {
+//        if(first.compareTo(second) > 0)
+//            return first;
+//        else
+//            return second;
+//    }
+
+//    public static <T extends Comparable<? super T>> T min(T first, T second) {
+//        if(first.compareTo(second) < 0)
+//            return first;
+//        else
+//            return second;
+//    }
 }
