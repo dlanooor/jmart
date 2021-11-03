@@ -1,6 +1,11 @@
 package ronaldJmartBO;
 
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import com.google.gson.*;
 
 /**
  * Aplikasi Jmart
@@ -10,15 +15,35 @@ import java.util.ArrayList;
  */
 public class Jmart
 {
+    class Country {
+        public String name;
+        public int population;
+        public List<String> listOfStates;
+    }
     public static void main(String[] args) {
-        Account accTest1 = new Account(1, "Supriyono Satu", "supriyono@ui.ac.id", "Supriyono123");
-        Account accTest2 = new Account(2, "Supriyono Dua", ".supriyono@ui.ac.id", "Supriyono123");
-        
-        System.out.println(accTest1.validate());
-        System.out.println(accTest2.validate());
-        
-        Complaint compTest1 = new Complaint(1, "Pengiriman tidak cepat, kurir tersesat");
-        System.out.println(compTest1);
+        //lokasi parth city.json
+        String filepath = "/Backup/Kuliah/Semester 5/Praktikum/[OOP] Pemrograman Berorientasi Objek/jmart/src/city.json";
+        Gson gson = new Gson();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filepath));
+            Country input = gson.fromJson(br, Country.class);
+            System.out.println("name: " + input.name);
+            System.out.println("population: " + input.population);
+            System.out.println("states:");
+            input.listOfStates.forEach(state -> System.out.println(state));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        Account accTest1 = new Account(1, "Supriyono Satu", "supriyono@ui.ac.id", "Supriyono123");
+//        Account accTest2 = new Account(2, "Supriyono Dua", ".supriyono@ui.ac.id", "Supriyono123");
+//
+//        System.out.println(accTest1.validate());
+//        System.out.println(accTest2.validate());
+//
+//        Complaint compTest1 = new Complaint(1, "Pengiriman tidak cepat, kurir tersesat");
+//        System.out.println(compTest1);
         // createCoupon();
         // createShipmentDuration();
         // create();
