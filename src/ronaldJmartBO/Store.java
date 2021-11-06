@@ -9,30 +9,41 @@ import java.util.regex.Pattern;
  * @author Ronald Grant
  * @version 27 Sept 2021
  */
-public class Store extends Recognizable implements FileParser
+
+// sebelum FileParser dihapus
+// public class Store extends Recognizable implements FileParser
+public class Store extends Serializable
 {
     public String name;
     public String address;
     public String phoneNumber;
+    public double balance;
     public static final String REGEX_PHONE = "^[0-9]{9,12}\b";
     public static final String REGEX_NAME = "^[A-Z][a-z\\sa-z]{4,19}\b";
     
-    public Store(int accountId, String name, String address, String phoneNumber)
+//    public Store(int accountId, String name, String address, String phoneNumber)
+//    {
+//        super(accountId);
+//        this.name = name;
+//        this.address = address;
+//        this.phoneNumber = phoneNumber;
+//    }
+    
+//    public Store(Account account, String name, String address, String phoneNumber)
+//    {
+//        this.name = name;
+//        this.address = address;
+//        this.phoneNumber = phoneNumber;
+//    }
+
+    public Store(String name, String address, String phoneNumber, double balance)
     {
-        super(accountId);
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.balance = balance;
     }
-    
-    public Store(Account account, String name, String address, String phoneNumber)
-    {
-        super(account.id);
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-    }
-    
+
     public String toString() {
         return  "name: " + name +
                 "\naddress: " + address +
@@ -49,13 +60,13 @@ public class Store extends Recognizable implements FileParser
         return matcherPhone.find() && matcherName.find();
     }
     
-    @Override
-    public boolean read(String content) {
-        return false;
-    }
-    
-    @Override
-    public Object write() {
-        return null;
-    }
+//    @Override
+//    public boolean read(String content) {
+//        return false;
+//    }
+//
+//    @Override
+//    public Object write() {
+//        return null;
+//    }
 }

@@ -10,8 +10,9 @@ package ronaldJmartBO;
 
 import java.util.Date;
 import java.util.ArrayList;
-
-public abstract class Invoice extends Recognizable implements FileParser
+// sebelum FileParser dihapus
+//public abstract class Invoice extends Recognizable implements FileParser
+public abstract class Invoice extends Serializable
 {
     public enum Rating {
         NONE,
@@ -36,7 +37,7 @@ public abstract class Invoice extends Recognizable implements FileParser
         public String message;
     }
     
-    public Date date;
+    public final Date date;
     public int buyerId;
     public int productId;
     public int complaintId;
@@ -44,18 +45,27 @@ public abstract class Invoice extends Recognizable implements FileParser
     public Status status;
     public ArrayList<Record> history;
 
-    protected Invoice(int id, int buyerId, int productId)
+//    protected Invoice(int id, int buyerId, int productId)
+//    {
+//        super(id);
+//        this.buyerId = buyerId;
+//        this.productId = productId;
+//        date = new Date();
+//        rating = Rating.NONE;
+//        status = Status.WAITING_CONFIRMATION;
+//    }
+
+    protected Invoice(int buyerId, int productId)
     {
-        super(id);
         this.buyerId = buyerId;
         this.productId = productId;
         date = new Date();
         rating = Rating.NONE;
         status = Status.WAITING_CONFIRMATION;
     }
-    
-    @Override
-    public boolean read(String content) {
-        return false;
-    }
+
+//    @Override
+//    public boolean read(String content) {
+//        return false;
+//    }
 }

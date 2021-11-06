@@ -9,19 +9,32 @@ import java.util.regex.Pattern;
  * @author Ronald Grant
  * @version 27 Sept 2021
  */
-public class Account extends Recognizable implements FileParser
+
+// sebelum FileParser dihapus
+// public class Account extends Recognizable implements FileParser
+public class Account extends Serializable
 {
     public String name;
     public String email;
     public String password;
+    public double balance;
+    public Store store;
     public static final String REGEX_EMAIL = "^\\w+([\\.]?[&\\*~\\w+])*@\\w+([\\.-]?)*(\\.\\w{2,3})+$";
     public static final String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$)(?=.*[A-Z]).{8,}$";
-    
-    Account(int id, String name, String email, String password) {
-        super(id);
+
+//    sebelum super dihapus (pt modul 5)
+//    Account(int id, String name, String email, String password) {
+//        super(id);
+//        this.name = name;
+//        this.email = email;
+//        this.password = password;
+//    }
+
+    Account(String name, String email, String password, double balance) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.balance = balance;
     }
     
     public String toString() {
@@ -40,13 +53,13 @@ public class Account extends Recognizable implements FileParser
         return matcherEmail.find() && matcherPassword.find();
     }
     
-    @Override
-    public boolean read(String content) {
-        return false;
-    }
-    
-    @Override
-    public Object write() {
-        return null;
-    }
+//    @Override
+//    public boolean read(String content) {
+//        return false;
+//    }
+//
+//    @Override
+//    public Object write() {
+//        return null;
+//    }
 }

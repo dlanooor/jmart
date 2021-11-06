@@ -7,63 +7,102 @@ package ronaldJmartBO;
  * @author Ronald Grant
  * @version 18 September 2021
  */
-public class Product extends Recognizable implements FileParser
+
+// sebelum FileParser dihapus
+// public class Product extends Recognizable implements FileParser
+public class Product extends Serializable
 {
-    public int storeId;
-    public String name;
-    public int weight;
-    public boolean conditionUsed;
-    public PriceTag priceTag;
+//    public int storeId;
+    public int accountId;
     public ProductCategory category;
-    public ProductRating rating;
-    public Shipment.MultiDuration multiDuration;
+//    public String name;
+    public boolean conditionUsed;
+    public double discount;
+    public String name;
+    public double price;
+    public byte shipmentPlans;
+    public int weight;
+
+//    public PriceTag priceTag;
+
+//    public ProductRating rating;
+//    public Shipment.MultiDuration multiDuration;
     
     // private static int idCounter;
     // public int id;
 
     // public Product(String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category) {
-    public Product(int id, int storeId, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category, Shipment.MultiDuration multiDuration) {
-        super(id);
-        this.storeId = storeId;
+
+//    sebelum super dihapus (pt modul 5)
+//    public Product(int id, int storeId, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category, Shipment.MultiDuration multiDuration) {
+//        super(id);
+//        this.storeId = storeId;
+//        this.name = name;
+//        this.weight = weight;
+//        this.conditionUsed = conditionUsed;
+//        this.priceTag = priceTag;
+//        this.category = category;
+//        this.multiDuration = multiDuration;
+//        this.rating = new ProductRating();
+//    }
+//
+//    public Product(int id, Store store, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category, Shipment.MultiDuration multiDuration) {
+//        super(id);
+//        this.storeId = store.id;
+//        this.name = name;
+//        this.weight = weight;
+//        this.conditionUsed = conditionUsed;
+//        this.priceTag = priceTag;
+//        this.category = category;
+//        this.multiDuration = multiDuration;
+//        this.rating = new ProductRating();
+//    }
+
+//    public Product(int accountId, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category, Shipment.MultiDuration multiDuration) {
+    public Product(int accountId, String name, int weight, boolean conditionUsed, double price, double discount, ProductCategory category, byte shipmentPlans) {
+        this.accountId = accountId;
         this.name = name;
         this.weight = weight;
         this.conditionUsed = conditionUsed;
-        this.priceTag = priceTag;
+        this.price = price;
+        this.discount = discount;
         this.category = category;
-        this.multiDuration = multiDuration;
-        this.rating = new ProductRating();
+        this.shipmentPlans = shipmentPlans;
     }
-    
-    public Product(int id, Store store, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category, Shipment.MultiDuration multiDuration) {
-        super(id);
-        this.storeId = store.id;
-        this.name = name;
-        this.weight = weight;
-        this.conditionUsed = conditionUsed;
-        this.priceTag = priceTag;
-        this.category = category;
-        this.multiDuration = multiDuration;
-        this.rating = new ProductRating();
-    }
+
+//    public Product(Store store, String name, int weight, boolean conditionUsed, PriceTag priceTag, ProductCategory category, Shipment.MultiDuration multiDuration) {
+//        this.storeId = store.id;
+//        this.name = name;
+//        this.weight = weight;
+//        this.conditionUsed = conditionUsed;
+//        this.priceTag = priceTag;
+//        this.category = category;
+//        this.multiDuration = multiDuration;
+//        this.rating = new ProductRating();
+//    }
     
     @Override
     public String toString(){
-        return  "Name: " + name +
+        return  "accountID: " + accountId +
+                "\nName: " + name +
                 "\nWeight: " + weight +
                 "\nconditionUsed: " + conditionUsed +
-                "\npriceTag: " + priceTag.getAdjustedPrice() +
-                "\ncategory: " + category +
-                "\nrating: " + rating.getAverage() +
-                "\nstoreId: " + storeId;
+                "\nprice: " + price +
+                "\nshipmentPlans: " + shipmentPlans +
+                "\ndiscount: " + discount +
+//                "\npriceTag: " + priceTag.getAdjustedPrice() +
+                "\ncategory: " + category;
+//                "\nrating: " + rating.getAverage() +
+//                "\nstoreId: " + storeId;
     }
     
-    @Override
-    public boolean read(String content) {
-        return false;
-    }
-    
-    @Override
-    public Object write() {
-        return null;
-    }
+//    @Override
+//    public boolean read(String content) {
+//        return false;
+//    }
+//
+//    @Override
+//    public Object write() {
+//        return null;
+//    }
 }

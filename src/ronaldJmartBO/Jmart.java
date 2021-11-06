@@ -1,10 +1,9 @@
 package ronaldJmartBO;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 import com.google.gson.*;
 
 /**
@@ -20,22 +19,40 @@ public class Jmart
         public int population;
         public List<String> listOfStates;
     }
+
     public static void main(String[] args) {
-        //lokasi parth city.json
-        String filepath = "/Backup/Kuliah/Semester 5/Praktikum/[OOP] Pemrograman Berorientasi Objek/jmart/src/city.json";
-        Gson gson = new Gson();
+        //lokasi path city.json
+//        String filepath = "/Backup/Kuliah/Semester 5/Praktikum/[OOP] Pemrograman Berorientasi Objek/jmart/src/city.json";
+//        Gson gson = new Gson();
+//        try {
+//            BufferedReader br = new BufferedReader(new FileReader(filepath));
+//            Country input = gson.fromJson(br, Country.class);
+//            System.out.println("name: " + input.name);
+//            System.out.println("population: " + input.population);
+//            System.out.println("states:");
+//            input.listOfStates.forEach(state -> System.out.println(state));
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//         randomProductList.json
         try {
-            BufferedReader br = new BufferedReader(new FileReader(filepath));
-            Country input = gson.fromJson(br, Country.class);
-            System.out.println("name: " + input.name);
-            System.out.println("population: " + input.population);
-            System.out.println("states:");
-            input.listOfStates.forEach(state -> System.out.println(state));
+            List<Product> list = read("F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\src\\randomProductList.json");
+            List<Product> filtered = filterByPrice(list, 0.0, 20000.0);
+            filtered.forEach(product -> System.out.println(product.price));
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (Throwable t) {
+            t.printStackTrace();
         }
 
+        System.out.println("account id: " + new Account(null, null, null, -1).id);
+        System.out.println("account id: " + new Account(null, null, null, -1).id);
+        System.out.println("account id: " + new Account(null, null, null, -1).id);
+
+        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
+        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
+        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
 //        Account accTest1 = new Account(1, "Supriyono Satu", "supriyono@ui.ac.id", "Supriyono123");
 //        Account accTest2 = new Account(2, "Supriyono Dua", ".supriyono@ui.ac.id", "Supriyono123");
 //
@@ -58,6 +75,69 @@ public class Jmart
         // System.out.println("Commission Multiplier = " + getCommissionMultiplier());
         // System.out.println("Adjusted Price = " + getAdjustedPrice(getDiscountedPrice(before, getDiscountPercentage(before, after))));
         // System.out.println("Admin Fee = " + getAdminFee(getDiscountedPrice(before, getDiscountPercentage(before, after))));
+    }
+
+    public static List<Product> filterByCategory(List<Product> list, ProductCategory category) {
+        List<Product> categoryFilteredList = new ArrayList<>();
+
+        for(Product lists : list) {
+            if(lists.category == category) {
+                categoryFilteredList.add(lists);
+            }
+        }
+
+        return categoryFilteredList;
+    }
+
+    public static List<Product> filterByPrice(List<Product> list, double minPrice, double maxPrice) {
+        List<Product> products = new ArrayList<Product>();
+        if (minPrice != 0.0 && maxPrice != 0.0){
+            for (Product x : list){
+                double productPrice = x.price;
+                if (productPrice > minPrice && productPrice < maxPrice){
+                    products.add(x);
+                }
+            }
+        }
+        else if (minPrice == 0.0){
+            for (Product x : list){
+                double productPrice = x.price;
+                if (productPrice < maxPrice){
+                    products.add(x);
+                }
+            }
+        }
+        else if (maxPrice == 0.0){
+            for (Product x : list){
+                double productPrice = x.price;
+                if(productPrice > minPrice){
+                    products.add(x);
+                }
+            }
+        }
+        return products;
+    }
+
+    public static List<Product> read(String filepath) {
+//        Gson gson = new Gson();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filepath));
+//            Product input = gson.fromJson(br, Product.class);
+
+            List<Product> products = new ArrayList<Product>();
+//            if(input.getClass().isArray()) {
+//                products = Arrays.asList((Product[]) input);
+//            }
+//            else if (input instanceof Collection) {
+//                products = new ArrayList<>((Collection<Product>)products);
+//            }
+            return products;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
     
     // public static Product create() {

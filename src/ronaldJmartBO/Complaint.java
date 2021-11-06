@@ -12,12 +12,14 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 // public class Complaint extends Transaction implements FileParser
-public class Complaint extends Recognizable implements FileParser
+// sebelum FileParser dihapus
+// public class Complaint extends Recognizable implements FileParser
+public class Complaint extends Serializable
 {
     // public int paymentId;
     // public String desc;
     
-    public Date date;
+    public final Date date;
     public String desc;
     
     // public Complaint(int id, Payment payment, String desc) {
@@ -32,25 +34,30 @@ public class Complaint extends Recognizable implements FileParser
         // this.desc = desc;
     // }
     
-    public Complaint(int id, String desc) {
-        super(id);
+//    public Complaint(int id, String desc) {
+//        super(id);
+//        date = new Date();
+//        this.desc = desc;
+//    }
+
+    public Complaint(String desc) {
         date = new Date();
         this.desc = desc;
     }
-    
+
     @Override
     public String toString() {
         SimpleDateFormat formatDate = new SimpleDateFormat("MM/dd/yyyy");
         return "Complaint{date=" + formatDate.format(date) + ",desc='" + desc + "'}";
     }
     
-    @Override
-    public boolean read(String content) {
-        return false;
-    }
-    
-    @Override
-    public Object write() {
-        return null;
-    }
+//    @Override
+//    public boolean read(String content) {
+//        return false;
+//    }
+//
+//    @Override
+//    public Object write() {
+//        return null;
+//    }
 }

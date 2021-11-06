@@ -7,7 +7,10 @@ package ronaldJmartBO;
  * @author Ronald Grant
  * @version 18 Sept 2021
  */
-public class Coupon extends Recognizable implements FileParser
+// sebelum FileParser dihapus
+// public class Coupon extends Recognizable implements FileParser
+
+public class Coupon extends Serializable
 {
     public final String name;
     public final int code;
@@ -15,9 +18,19 @@ public class Coupon extends Recognizable implements FileParser
     public final Type type;
     public final double minimum;
     private boolean used;
-    
-    public Coupon(int id, String name, int code, Type type, double cut, double minimum) {
-        super(id);
+
+//    sebelum super dihapus (pt modul 5)
+//    public Coupon(int id, String name, int code, Type type, double cut, double minimum) {
+//        super(id);
+//        this.name = name;
+//        this.code = code;
+//        this.type = type;
+//        this.cut = cut;
+//        this.minimum = minimum;
+//        used = false;
+//    }
+
+    public Coupon(String name, int code, Type type, double cut, double minimum) {
         this.name = name;
         this.code = code;
         this.type = type;
@@ -25,33 +38,38 @@ public class Coupon extends Recognizable implements FileParser
         this.minimum = minimum;
         used = false;
     }
-    
+
     public boolean isUsed() {
         return used;
     }
     
-    public boolean canApply(PriceTag priceTag) {
-        if(priceTag.getAdjustedPrice() >= minimum && used == false)
+    public boolean canApply(double price, double discount) {
+        if(Treasury.getAdjustedPrice(price, discount) >= minimum && used == false)
             return true;
         else
             return false;
     }
     
-    public double apply(PriceTag priceTag) {
+    public double apply(double price, double discount) {
         used = true;
         if(type == Type.DISCOUNT)
-            return priceTag.getAdjustedPrice() - (priceTag.getAdjustedPrice() * cut / 100);
+            return Treasury.getAdjustedPrice(price, discount) - (Treasury.getAdjustedPrice(price, discount) * cut / 100);
         else
-            return priceTag.getAdjustedPrice() - cut;
+            return Treasury.getAdjustedPrice(price, discount) - cut;
     }
-    
-    @Override
-    public boolean read(String content) {
-        return false;
+
+    public enum Type {
+        DISCOUNT,
+        REBATE;
     }
-    
-    @Override
-    public Object write() {
-        return null;
-    }
+
+//    @Override
+//    public boolean read(String content) {
+//        return false;
+//    }
+//
+//    @Override
+//    public Object write() {
+//        return null;
+//    }
 }

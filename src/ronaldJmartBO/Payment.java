@@ -8,7 +8,7 @@ package ronaldJmartBO;
  * @version 27 Sept 2021
  */
 // public class Payment extends Transaction implements FileParser
-public class Payment extends Invoice implements Transactor
+public class Payment extends Invoice
 {
     // public int productId;
     // public ShipmentDuration shipmentDuration;
@@ -26,20 +26,23 @@ public class Payment extends Invoice implements Transactor
         // this.productId = productId;
         // this.shipmentDuration = shipmentDuration;
     // }
-    
-    public Payment(int id, int buyerId, int productId, int productCount, Shipment shipment) {
-        super(id, buyerId, productId);
+
+    public Payment(int buyerId, int productId, int productCount, Shipment shipment) {
+        super(buyerId, productId);
         this.productCount = productCount;
         this.shipment = shipment;
     }
-    
-    @Override
-    public boolean validate() {
-        return false;
+
+    public double getTotalPay(){
+        return 0;
     }
-    
-    @Override
-    public Invoice perform() {
-        return null;
-    }
+//    @Override
+//    public boolean validate() {
+//        return false;
+//    }
+//
+//    @Override
+//    public Invoice perform() {
+//        return null;
+//    }
 }
