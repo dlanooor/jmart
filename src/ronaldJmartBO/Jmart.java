@@ -1,10 +1,14 @@
 package ronaldJmartBO;
 
-import java.util.*;
-import java.io.BufferedReader;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import com.google.gson.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Aplikasi Jmart
@@ -12,6 +16,7 @@ import com.google.gson.*;
  * @author Ronald Grant
  * @version 11 September 2021
  */
+
 public class Jmart
 {
     class Country {
@@ -39,20 +44,32 @@ public class Jmart
 //         randomProductList.json
         try {
             List<Product> list = read("F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\src\\randomProductList.json");
-            List<Product> filtered = filterByPrice(list, 0.0, 20000.0);
-            filtered.forEach(product -> System.out.println(product.price));
+            List<Product> filtered = filterByPrice(list, 13000.0, 15000.0);
+//            filtered.forEach(product -> System.out.println(product.price));
+
+            List<Product> filteredName1 = filterByName(list, "gtx", 1, 5);
+            filteredName1.forEach(product -> System.out.println(product.name));
+
+            System.out.println();
+
+            List<Product> filteredAccountID = filterByAccountid(list, 1, 0, 5);
+            filteredAccountID.forEach(product -> System.out.println(product.name));
+
         }
         catch (Throwable t) {
             t.printStackTrace();
         }
 
-        System.out.println("account id: " + new Account(null, null, null, -1).id);
-        System.out.println("account id: " + new Account(null, null, null, -1).id);
-        System.out.println("account id: " + new Account(null, null, null, -1).id);
+//        System.out.println();
+//        System.out.println("account id: " + new Account(null, null, null, -1).id);
+//        System.out.println("account id: " + new Account(null, null, null, -1).id);
+//        System.out.println("account id: " + new Account(null, null, null, -1).id);
+//
+//        System.out.println();
+//        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
+//        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
+//        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
 
-        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
-        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
-        System.out.println("payment id: " + new Payment(-1, -1, -1, null).id);
 //        Account accTest1 = new Account(1, "Supriyono Satu", "supriyono@ui.ac.id", "Supriyono123");
 //        Account accTest2 = new Account(2, "Supriyono Dua", ".supriyono@ui.ac.id", "Supriyono123");
 //
@@ -75,6 +92,45 @@ public class Jmart
         // System.out.println("Commission Multiplier = " + getCommissionMultiplier());
         // System.out.println("Adjusted Price = " + getAdjustedPrice(getDiscountedPrice(before, getDiscountPercentage(before, after))));
         // System.out.println("Admin Fee = " + getAdminFee(getDiscountedPrice(before, getDiscountPercentage(before, after))));
+    }
+
+    private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
+        List<Product> pagination = new ArrayList<>();
+
+        for(Product lists : list) {
+            if(pred.predicate(lists)) {
+                pagination.add(lists);
+            }
+        }
+
+        if(pageSize < 0 || page < 0 || (page * pageSize) > pagination.size()) {
+            throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
+        }
+
+        int fromIndex = page * pageSize;
+        if(pagination == null || pagination.size() <= fromIndex){
+            return Collections.emptyList();
+        }
+
+        return pagination.subList(fromIndex, Math.min(fromIndex + pageSize, pagination.size()));
+    }
+
+    public static List<Product> filterByAccountid(List<Product> list, int accountid, int page, int pageSize) {
+        List<Product> accountidFilteredList = new ArrayList<>();
+
+        Predicate<Product> predByAccountId = prodList -> (prodList.accountId == accountid);
+        accountidFilteredList = paginate(list, page,pageSize, predByAccountId);
+
+        return accountidFilteredList;
+    }
+
+    public static List<Product> filterByName(List<Product> list, String search, int page, int pageSize) {
+        List<Product> nameFilteredList = new ArrayList<>();
+
+        Predicate<Product> predByName = prodList -> prodList.name.toLowerCase().contains(search.toLowerCase());
+        nameFilteredList = paginate(list, page, pageSize, predByName);
+
+        return nameFilteredList;
     }
 
     public static List<Product> filterByCategory(List<Product> list, ProductCategory category) {
@@ -118,28 +174,26 @@ public class Jmart
         return products;
     }
 
-    public static List<Product> read(String filepath) {
-//        Gson gson = new Gson();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(filepath));
-//            Product input = gson.fromJson(br, Product.class);
-
-            List<Product> products = new ArrayList<Product>();
-//            if(input.getClass().isArray()) {
-//                products = Arrays.asList((Product[]) input);
-//            }
-//            else if (input instanceof Collection) {
-//                products = new ArrayList<>((Collection<Product>)products);
-//            }
-            return products;
+    public static List<Product> read(String filepath) throws FileNotFoundException{
+        JsonReader jr = new JsonReader(new FileReader(filepath));
+        List<Product> list = new ArrayList<Product>();
+        try{
+            Gson gson = new Gson();
+            jr.beginArray();
+            while(jr.hasNext()){
+                Product product = gson.fromJson(jr, Product.class);
+                list.add(product);
+            }
+            jr.endArray();
         }
-        catch (IOException e) {
+        catch(IOException e){
             e.printStackTrace();
         }
-
-        return null;
+        return list;
     }
-    
+
+
+
     // public static Product create() {
         // // ProductCategory category = ProductCategory.GAMING;
         // // PriceTag priceTag = new PriceTag(10000, 50);
