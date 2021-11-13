@@ -5,7 +5,6 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +53,6 @@ public class Jmart
 
             List<Product> filteredAccountID = filterByAccountid(list, 1, 0, 5);
             filteredAccountID.forEach(product -> System.out.println(product.name));
-
         }
         catch (Throwable t) {
             t.printStackTrace();
@@ -103,7 +101,7 @@ public class Jmart
             }
         }
 
-        if(pageSize < 0 || page < 0 || (page * pageSize) > pagination.size()) {
+        if(pageSize < 0 || page < 0) {
             throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
         }
 
@@ -146,49 +144,35 @@ public class Jmart
     }
 
     public static List<Product> filterByPrice(List<Product> list, double minPrice, double maxPrice) {
-        List<Product> products = new ArrayList<Product>();
-        if (minPrice != 0.0 && maxPrice != 0.0){
-            for (Product x : list){
-                double productPrice = x.price;
-                if (productPrice > minPrice && productPrice < maxPrice){
-                    products.add(x);
-                }
+        List<Product> listFilterByPrice = new ArrayList<>();
+        if(minPrice == 0.0 && maxPrice == 0.0) return null;
+        else if(minPrice == 0.0)
+        {
+            for(Product lists : list)
+            {
+                if(lists.price <= maxPrice) listFilterByPrice.add(lists);
             }
         }
-        else if (minPrice == 0.0){
-            for (Product x : list){
-                double productPrice = x.price;
-                if (productPrice < maxPrice){
-                    products.add(x);
-                }
+        else if(maxPrice == 0.0)
+        {
+            for(Product lists : list)
+            {
+                if(lists.price >= minPrice) listFilterByPrice.add(lists);
             }
         }
-        else if (maxPrice == 0.0){
-            for (Product x : list){
-                double productPrice = x.price;
-                if(productPrice > minPrice){
-                    products.add(x);
-                }
+        else
+            for(Product lists : list)
+            {
+                if(lists.price >= minPrice && lists.price <= maxPrice) listFilterByPrice.add(lists);
             }
-        }
-        return products;
+        return listFilterByPrice;
     }
 
     public static List<Product> read(String filepath) throws FileNotFoundException{
-        JsonReader jr = new JsonReader(new FileReader(filepath));
-        List<Product> list = new ArrayList<Product>();
-        try{
-            Gson gson = new Gson();
-            jr.beginArray();
-            while(jr.hasNext()){
-                Product product = gson.fromJson(jr, Product.class);
-                list.add(product);
-            }
-            jr.endArray();
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
+        final JsonReader reader = new JsonReader(new FileReader(filepath));
+        Product[] entry = new Gson().fromJson(reader, Product[].class);
+        List<Product> list = new ArrayList<>();
+        Collections.addAll(list, entry);
         return list;
     }
 
