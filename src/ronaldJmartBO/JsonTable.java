@@ -14,7 +14,6 @@ public class JsonTable<T> extends Vector {
     public JsonTable(Class<T> clazz, String filepath) throws IOException {
         this.filepath = filepath;
         try {
-            @SuppressWarnings("unchecked")
             Class<T[]> arrayType = (Class<T[]>) Array.newInstance(clazz, 0).getClass();
             T[] loaded = readJson(arrayType, filepath);
 
@@ -24,26 +23,18 @@ public class JsonTable<T> extends Vector {
         }
         catch (FileNotFoundException e)
         {
-            File f = new File(filepath);
-            File f1 =  f.getParentFile();
-            if(f1 != null)
-            {
-                f1.mkdirs();
-            }
-            f.createNewFile();
+            File file = new File(filepath);
+            File fileParent =  file.getParentFile();
+            if(fileParent != null)
+                fileParent.mkdirs();
+            file.createNewFile();
         }
     }
 
     public static <T>T readJson(Class<T> clazz, String filepath) throws FileNotFoundException {
-        T read = null;
-        try {
-            final JsonReader reader = new JsonReader(new FileReader(filepath));
-            read = gson.fromJson(reader, clazz);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return read;
+        JsonReader jsonReader = new JsonReader(new FileReader(filepath));
+        T obj = gson.fromJson(jsonReader, clazz);
+        return obj;
     }
 
     public void writeJson() throws IOException {

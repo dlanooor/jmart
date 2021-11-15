@@ -8,6 +8,27 @@ public class Algorithm {
     private Algorithm() {
     }
 
+    private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
+        List<Product> pagination = new ArrayList<>();
+
+        for(Product lists : list) {
+            if(pred.predicate(lists)) {
+                pagination.add(lists);
+            }
+        }
+
+        if(pageSize < 0 || page < 0) {
+            throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
+        }
+
+        int fromIndex = page * pageSize;
+        if(pagination == null || pagination.size() <= fromIndex){
+            return Collections.emptyList();
+        }
+
+        return pagination.subList(fromIndex, Math.min(fromIndex + pageSize, pagination.size()));
+    }
+
     /* collect method */
 //    public static <T> List<T> collect(T[] array, T value) {
 //        List<T> list = Arrays.asList(array);

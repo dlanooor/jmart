@@ -1,6 +1,5 @@
 package ronaldJmartBO;
 
-
 /**
  * Abstract class Invoice
  *
@@ -9,51 +8,32 @@ package ronaldJmartBO;
  */
 
 import java.util.Date;
-import java.util.ArrayList;
-// sebelum FileParser dihapus
-//public abstract class Invoice extends Recognizable implements FileParser
+
 public abstract class Invoice extends Serializable
 {
-    public enum Rating {
+    public static enum Rating {
         NONE,
         BAD,
         NEUTRAL,
         GOOD;
     }
     
-    public enum Status {
+    public static enum Status {
         WAITING_CONFIRMATION,
         CANCELLED,
         ON_PROGRESS,
         ON_DELIVERY,
         COMPLAINT,
         FINISHED,
+        DELIVERED,
         FAILED;
     }
-    
-    public class Record {
-        public Status status;
-        public Date date;
-        public String message;
-    }
-    
+
     public final Date date;
     public int buyerId;
     public int productId;
     public int complaintId;
     public Rating rating;
-    public Status status;
-    public ArrayList<Record> history;
-
-//    protected Invoice(int id, int buyerId, int productId)
-//    {
-//        super(id);
-//        this.buyerId = buyerId;
-//        this.productId = productId;
-//        date = new Date();
-//        rating = Rating.NONE;
-//        status = Status.WAITING_CONFIRMATION;
-//    }
 
     protected Invoice(int buyerId, int productId)
     {
@@ -61,11 +41,6 @@ public abstract class Invoice extends Serializable
         this.productId = productId;
         date = new Date();
         rating = Rating.NONE;
-        status = Status.WAITING_CONFIRMATION;
+        complaintId = -1;
     }
-
-//    @Override
-//    public boolean read(String content) {
-//        return false;
-//    }
 }

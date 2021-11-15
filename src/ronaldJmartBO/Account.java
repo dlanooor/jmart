@@ -40,7 +40,8 @@ public class Account extends Serializable
     public String toString() {
         return  "name: " + name +
                 "\nemail: " + email +
-                "\npassword: " + password;
+                "\npassword: " + password +
+                "\nbalance: " + balance;
     }
     
     public boolean validate() {

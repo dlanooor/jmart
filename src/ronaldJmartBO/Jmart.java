@@ -1,13 +1,7 @@
 package ronaldJmartBO;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Aplikasi Jmart
@@ -18,46 +12,70 @@ import java.util.List;
 
 public class Jmart
 {
-    class Country {
-        public String name;
-        public int population;
-        public List<String> listOfStates;
-    }
+    public static long DELIVERED_LIMIT_MS = 10L;
+    public static long ON_DELIVERY_LIMIT_MS = 20L;
+    public static long ON_PROGRESS_LIMIT_MS = 30L;
+    public static long WAITING_CONF_LIMIT_MS = 40L;
 
     public static void main(String[] args) {
-        //lokasi path city.json
-//        String filepath = "/Backup/Kuliah/Semester 5/Praktikum/[OOP] Pemrograman Berorientasi Objek/jmart/src/city.json";
-//        Gson gson = new Gson();
 //        try {
-//            BufferedReader br = new BufferedReader(new FileReader(filepath));
-//            Country input = gson.fromJson(br, Country.class);
-//            System.out.println("name: " + input.name);
-//            System.out.println("population: " + input.population);
-//            System.out.println("states:");
-//            input.listOfStates.forEach(state -> System.out.println(state));
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//         randomProductList.json
-        try {
-            List<Product> list = read("F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\src\\randomProductList.json");
-            List<Product> filtered = filterByPrice(list, 13000.0, 15000.0);
+//            List<Product> list = read("F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\src\\randomProductList.json");
+//            List<Product> filtered = filterByPrice(list, 13000.0, 15000.0);
 //            filtered.forEach(product -> System.out.println(product.price));
+//
+//            List<Product> filteredName1 = filterByName(list, "gtx", 1, 5);
+//            filteredName1.forEach(product -> System.out.println(product.name));
+//
+//            System.out.println();
+//
+//            List<Product> filteredAccountID = filterByAccountid(list, 1, 0, 5);
+//            filteredAccountID.forEach(product -> System.out.println(product.name));
+//        }
+//        catch (Throwable t) {
+//            t.printStackTrace();
+//        }
 
-            List<Product> filteredName1 = filterByName(list, "gtx", 1, 5);
-            filteredName1.forEach(product -> System.out.println(product.name));
+        try {
+            // sesuaikan argument dibawah dengan lokasi resource file yang anda unduh di EMAS!
+            JsonTable<Payment> table = new JsonTable<>(Payment.class, "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\src\\randomPaymentList.json");
 
-            System.out.println();
+            // membuat thread untuk payment pool
+            ObjectPoolThread<Payment> paymentPool = new ObjectPoolThread<Payment>("Thread-PP", Jmart::paymentTimekeeper);
 
-            List<Product> filteredAccountID = filterByAccountid(list, 1, 0, 5);
-            filteredAccountID.forEach(product -> System.out.println(product.name));
+            // menjalankan thread (ingat start bukan run), run melakukan instruksi dalam current thread
+            paymentPool.start();
+
+            // tambahkan seluruh payment hasil baca ke dalam pool
+//            table.forEach(payment -> paymentPool.add(payment));
+
+            // berikan sinyal untuk keluar dari routine apabila seluruh objek telah di proses
+            while(paymentPool.size() != 0);
+            paymentPool.exit();
+
+            // tunggu hingga thread selesai dieksekusi
+            while(paymentPool.isAlive());
+            // thread telah berhasil diselesaikan
+            System.out.println("Thread exited successfully");
+
+            // cek hasil output
+            Gson gson = new Gson();
+//            table.forEach(payment -> {
+//                String history = gson.toJson(payment.history);
+//                System.out.println(history);
+//            });
+
+//            String filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\src\\account.json";
+//
+//            JsonTable<Account> tableAccount = new JsonTable<>(Account.class, filepath);
+//            tableAccount.add(new Account("name", "email", "password", 10000));
+//            tableAccount.writeJson();
+//
+//            tableAccount = new JsonTable<>(Account.class, filepath);
+//            tableAccount.forEach(account -> System.out.println(account.toString()));
         }
         catch (Throwable t) {
             t.printStackTrace();
         }
-
 //        System.out.println();
 //        System.out.println("account id: " + new Account(null, null, null, -1).id);
 //        System.out.println("account id: " + new Account(null, null, null, -1).id);
@@ -92,89 +110,115 @@ public class Jmart
         // System.out.println("Admin Fee = " + getAdminFee(getDiscountedPrice(before, getDiscountPercentage(before, after))));
     }
 
-    private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
-        List<Product> pagination = new ArrayList<>();
+    public static boolean paymentTimekeeper(Payment payment) {
+        long elapsedTime = (new java.util.Date()).getTime() - payment.history.get(payment.history.size()-1).date.getTime();
 
-        for(Product lists : list) {
-            if(pred.predicate(lists)) {
-                pagination.add(lists);
-            }
+        if(payment.history.get(payment.history.size()-1).status.equals(Invoice.Status.WAITING_CONFIRMATION) && elapsedTime > WAITING_CONF_LIMIT_MS)
+            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Failed"));
+
+        else if(payment.history.get(payment.history.size()-1).status.equals(Invoice.Status.ON_PROGRESS) && elapsedTime > ON_PROGRESS_LIMIT_MS)
+            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Failed"));
+
+        else if(payment.history.get(payment.history.size()-1).status.equals(Invoice.Status.ON_DELIVERY) && elapsedTime > ON_DELIVERY_LIMIT_MS)
+            payment.history.add(new Payment.Record(Invoice.Status.DELIVERED, "Delivered"));
+
+        else if(payment.history.get(payment.history.size() - 1).status.equals(Invoice.Status.DELIVERED) && elapsedTime > ON_DELIVERY_LIMIT_MS)
+            payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "Finished"));
+
+        for(Payment.Record element: payment.history) {
+            if(element.status == Invoice.Status.FINISHED || element.status == Invoice.Status.FAILED)
+                payment.history.remove(element);
         }
 
-        if(pageSize < 0 || page < 0) {
-            throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
-        }
-
-        int fromIndex = page * pageSize;
-        if(pagination == null || pagination.size() <= fromIndex){
-            return Collections.emptyList();
-        }
-
-        return pagination.subList(fromIndex, Math.min(fromIndex + pageSize, pagination.size()));
-    }
-
-    public static List<Product> filterByAccountid(List<Product> list, int accountid, int page, int pageSize) {
-        List<Product> accountidFilteredList = new ArrayList<>();
-
-        Predicate<Product> predByAccountId = prodList -> (prodList.accountId == accountid);
-        accountidFilteredList = paginate(list, page,pageSize, predByAccountId);
-
-        return accountidFilteredList;
-    }
-
-    public static List<Product> filterByName(List<Product> list, String search, int page, int pageSize) {
-        List<Product> nameFilteredList = new ArrayList<>();
-
-        Predicate<Product> predByName = prodList -> prodList.name.toLowerCase().contains(search.toLowerCase());
-        nameFilteredList = paginate(list, page, pageSize, predByName);
-
-        return nameFilteredList;
-    }
-
-    public static List<Product> filterByCategory(List<Product> list, ProductCategory category) {
-        List<Product> categoryFilteredList = new ArrayList<>();
-
-        for(Product lists : list) {
-            if(lists.category == category) {
-                categoryFilteredList.add(lists);
-            }
-        }
-
-        return categoryFilteredList;
-    }
-
-    public static List<Product> filterByPrice(List<Product> list, double minPrice, double maxPrice) {
-        List<Product> listFilterByPrice = new ArrayList<>();
-        if(minPrice == 0.0 && maxPrice == 0.0) return null;
-        else if(minPrice == 0.0)
-        {
-            for(Product lists : list)
-            {
-                if(lists.price <= maxPrice) listFilterByPrice.add(lists);
-            }
-        }
-        else if(maxPrice == 0.0)
-        {
-            for(Product lists : list)
-            {
-                if(lists.price >= minPrice) listFilterByPrice.add(lists);
-            }
-        }
+        if(payment.history.isEmpty())
+            return true;
         else
-            for(Product lists : list)
-            {
-                if(lists.price >= minPrice && lists.price <= maxPrice) listFilterByPrice.add(lists);
-            }
-        return listFilterByPrice;
+            return false;
     }
 
-    public static List<Product> read(String filepath) throws FileNotFoundException{
-        final JsonReader reader = new JsonReader(new FileReader(filepath));
-        Product[] entry = new Gson().fromJson(reader, Product[].class);
-        List<Product> list = new ArrayList<>();
-        Collections.addAll(list, entry);
-        return list;
-    }
+//    private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
+//        List<Product> pagination = new ArrayList<>();
+//
+//        for(Product lists : list) {
+//            if(pred.predicate(lists)) {
+//                pagination.add(lists);
+//            }
+//        }
+//
+//        if(pageSize < 0 || page < 0) {
+//            throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
+//        }
+//
+//        int fromIndex = page * pageSize;
+//        if(pagination == null || pagination.size() <= fromIndex){
+//            return Collections.emptyList();
+//        }
+//
+//        return pagination.subList(fromIndex, Math.min(fromIndex + pageSize, pagination.size()));
+//    }
+//
+//    public static List<Product> filterByAccountid(List<Product> list, int accountid, int page, int pageSize) {
+//        List<Product> accountidFilteredList = new ArrayList<>();
+//
+//        Predicate<Product> predByAccountId = prodList -> (prodList.accountId == accountid);
+//        accountidFilteredList = paginate(list, page,pageSize, predByAccountId);
+//
+//        return accountidFilteredList;
+//    }
+//
+//    public static List<Product> filterByName(List<Product> list, String search, int page, int pageSize) {
+//        List<Product> nameFilteredList = new ArrayList<>();
+//
+//        Predicate<Product> predByName = prodList -> prodList.name.toLowerCase().contains(search.toLowerCase());
+//        nameFilteredList = paginate(list, page, pageSize, predByName);
+//
+//        return nameFilteredList;
+//    }
+//
+//    public static List<Product> filterByCategory(List<Product> list, ProductCategory category) {
+//        List<Product> categoryFilteredList = new ArrayList<>();
+//
+//        for(Product lists : list) {
+//            if(lists.category == category) {
+//                categoryFilteredList.add(lists);
+//            }
+//        }
+//
+//        return categoryFilteredList;
+//    }
+//
+//    public static List<Product> filterByPrice(List<Product> list, double minPrice, double maxPrice) {
+//        List<Product> listFilterByPrice = new ArrayList<>();
+//        if(minPrice == 0.0 && maxPrice == 0.0) return null;
+//        else if(minPrice == 0.0)
+//        {
+//            for(Product lists : list)
+//            {
+//                if(lists.price <= maxPrice) listFilterByPrice.add(lists);
+//            }
+//        }
+//        else if(maxPrice == 0.0)
+//        {
+//            for(Product lists : list)
+//            {
+//                if(lists.price >= minPrice) listFilterByPrice.add(lists);
+//            }
+//        }
+//        else
+//            for(Product lists : list)
+//            {
+//                if(lists.price >= minPrice && lists.price <= maxPrice) listFilterByPrice.add(lists);
+//            }
+//        return listFilterByPrice;
+//    }
+//
+//    public static List<Product> read(String filepath) throws FileNotFoundException{
+//        final JsonReader reader = new JsonReader(new FileReader(filepath));
+//        Product[] entry = new Gson().fromJson(reader, Product[].class);
+//        List<Product> list = new ArrayList<>();
+//        Collections.addAll(list, entry);
+//        return list;
+//    }
 
 
 
