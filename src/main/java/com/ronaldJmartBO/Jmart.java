@@ -1,5 +1,6 @@
 package com.ronaldJmartBO;
 
+import com.ronaldJmartBO.dbjson.JsonDBEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -20,6 +21,8 @@ public class Jmart
 
     public static void main(String[] args) {
         SpringApplication.run(Jmart.class, args);
+        SpringApplication.run(Jmart.class, args);
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->JsonDBEngine.join()));
 //        try {
 //            List<Product> list = read("F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\src\\randomProductList.json");
 //            List<Product> filtered = filterByPrice(list, 13000.0, 15000.0);

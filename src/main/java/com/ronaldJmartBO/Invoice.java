@@ -7,6 +7,8 @@ package com.ronaldJmartBO;
  * @version 27 Sept 2021
  */
 
+import com.ronaldJmartBO.dbjson.Serializable;
+
 import java.util.Date;
 
 public abstract class Invoice extends Serializable

@@ -1,6 +1,8 @@
 package com.ronaldJmartBO;
 
 
+import com.ronaldJmartBO.dbjson.Serializable;
+
 /**
  * Pembuatan Produk.    
  *

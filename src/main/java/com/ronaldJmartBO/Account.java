@@ -1,5 +1,7 @@
 package com.ronaldJmartBO;
 
+import com.ronaldJmartBO.dbjson.Serializable;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

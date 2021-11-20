@@ -8,6 +8,8 @@ package com.ronaldJmartBO;
  * @version (a version number or a date)
  */
 
+import com.ronaldJmartBO.dbjson.Serializable;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 

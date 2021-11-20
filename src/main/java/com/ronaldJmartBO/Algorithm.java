@@ -8,7 +8,7 @@ public class Algorithm {
     private Algorithm() {
     }
 
-    private static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
+    public static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
         List<Product> pagination = new ArrayList<>();
 
         for(Product lists : list) {
