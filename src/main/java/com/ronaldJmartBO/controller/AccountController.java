@@ -4,10 +4,11 @@ import com.ronaldJmartBO.Account;
 import com.ronaldJmartBO.Store;
 import com.ronaldJmartBO.dbjson.JsonAutowired;
 import com.ronaldJmartBO.dbjson.JsonTable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,16 +29,39 @@ public class AccountController implements BasicGetController<Account>
     }
 
     @PostMapping("/login")
-    Account login(String email, String password) {
+    Account login(@RequestParam String email, @RequestParam String password) {
         for(Account account : accountTable) {
-            if(account.email.equals(email) && account.password.equals(password))
-                return account;
+            try {
+                // Static getInstance method is called with hashing MD5
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                // digest() method is called to calculate message digest
+                //  of an input digest() return array of byte
+                byte[] messageDigest = md.digest(password.getBytes());
+
+                // Convert byte array into signum representation
+                BigInteger no = new BigInteger(1, messageDigest);
+
+                // Convert message digest into hex value
+                String hashtext = no.toString(16);
+                while (hashtext.length() < 32) {
+                    hashtext = "0" + hashtext;
+                }
+
+                if(account.email.equals(email) && account.password.equals(hashtext))
+                    return account;
+            }
+
+            // For specifying wrong message digest algorithms
+            catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
         }
         return null;
     }
 
     @PostMapping("/register")
-    Account register(String name, String email, String password) {
+    Account register(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
         Matcher matcherEmail = REGEX_PATTERN_EMAIL.matcher(email);
         Matcher matcherPassword = REGEX_PATTERN_PASSWORD.matcher(password);
 
@@ -49,16 +73,39 @@ public class AccountController implements BasicGetController<Account>
         }
 
         if(!name.isBlank() && matcherEmail.find() && matcherPassword.find() && uniqueEmail) {
-            Account newAccount = new Account(name, email, password, 0.0);
-            accountTable.add(newAccount);
-            return newAccount;
+            try {
+                // Static getInstance method is called with hashing MD5
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                // digest() method is called to calculate message digest
+                //  of an input digest() return array of byte
+                byte[] messageDigest = md.digest(password.getBytes());
+
+                // Convert byte array into signum representation
+                BigInteger no = new BigInteger(1, messageDigest);
+
+                // Convert message digest into hex value
+                String hashtext = no.toString(16);
+                while (hashtext.length() < 32) {
+                    hashtext = "0" + hashtext;
+                }
+
+                Account newAccount = new Account(name, email, hashtext, 0.0);
+                accountTable.add(newAccount);
+                return newAccount;
+            }
+
+            // For specifying wrong message digest algorithms
+            catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return null;
     }
 
     @PostMapping("/{id}/registerStore")
-    Store registerStore(int id, String name, String address, String phoneNumber) {
+    Store registerStore(@PathVariable int id, @RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber) {
         for(Account account : accountTable) {
             if(account.id == id && account.store != null){
                 account.store = new Store(name, address, phoneNumber, 0.0);
@@ -70,7 +117,7 @@ public class AccountController implements BasicGetController<Account>
     }
 
     @PostMapping("/{id}/topUp")
-    boolean topUp(int id, double balance) {
+    boolean topUp(int id, @RequestParam double balance) {
         for(Account account : accountTable) {
             if(account.id == id) {
                 account.balance += balance;
