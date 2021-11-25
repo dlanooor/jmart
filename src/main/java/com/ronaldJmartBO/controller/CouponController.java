@@ -5,7 +5,6 @@ import com.ronaldJmartBO.dbjson.JsonAutowired;
 import com.ronaldJmartBO.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,11 +37,7 @@ public class CouponController implements BasicGetController<Coupon> {
 
     @GetMapping("/getAvailable")
     List<Coupon> getAvailable(@RequestParam int page, @RequestParam int pageSize) {
-        List<Coupon> availableCoupon = new ArrayList<>();
-        for (Coupon coupon : couponTable) {
-            if(coupon.isUsed() == false)
-                availableCoupon.add(coupon);
-        }
-        return availableCoupon;
+        Predicate<Coupon> couponPredicate = available -> available.isUsed();
+        return Algorithm.paginate(getJsonTable(), page, pageSize, couponPredicate);
     }
 }

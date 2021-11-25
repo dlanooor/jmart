@@ -1,13 +1,9 @@
 package com.ronaldJmartBO.controller;
 
-import com.ronaldJmartBO.Invoice;
-import com.ronaldJmartBO.ObjectPoolThread;
-import com.ronaldJmartBO.Payment;
+import com.ronaldJmartBO.*;
 import com.ronaldJmartBO.dbjson.JsonAutowired;
 import com.ronaldJmartBO.dbjson.JsonTable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
@@ -28,17 +24,51 @@ public class PaymentController implements BasicGetController<Payment>{
     }
 
     @PostMapping("/{id}/accept")
-    boolean accept(int id) {
+    boolean accept(@PathVariable int id) {
+        Predicate<Payment> searchPayment = paymentSearch -> paymentSearch.id == id;
+        Algorithm.find(paymentTable, searchPayment);
+        Payment payment = Algorithm.find(paymentTable, searchPayment);
+
+        if(Algorithm.exists(paymentTable, searchPayment) && payment.history.get(payment.history.size() - 1).status.equals(Invoice.Status.WAITING_CONFIRMATION)) {
+            payment.history.add(new Payment.Record(Invoice.Status.ON_PROGRESS, "Order Processed"));
+            return true;
+        }
         return false;
     }
 
     @PostMapping("/{id}/cancel")
-    boolean cancel(int id) {
+    boolean cancel(@PathVariable int id) {
+        Predicate<Payment> searchPayment = paymentSearch -> paymentSearch.id == id;
+        Algorithm.find(paymentTable, searchPayment);
+        Payment payment = Algorithm.find(paymentTable, searchPayment);
+
+        if(Algorithm.exists(paymentTable, searchPayment) && payment.history.get(payment.history.size() - 1).status.equals(Invoice.Status.WAITING_CONFIRMATION)) {
+            payment.history.add(new Payment.Record(Invoice.Status.CANCELLED, "Order Cancelled"));
+            return true;
+        }
         return false;
     }
 
     @PostMapping("/create")
-    Payment create(int buyerId, int productId, int productCount, String shipmentAddress, byte shipmentPlan) {
+    Payment create(@RequestParam int buyerId, @RequestParam int productId, @RequestParam int productCount, @RequestParam String shipmentAddress, @RequestParam byte shipmentPlan) {
+        Predicate<Account> searchAcc = accSearch -> accSearch.id == buyerId;
+        Predicate<Product> searchProd = prodSearch -> prodSearch.id == productId;
+
+        Account account = Algorithm.find(AccountController.accountTable, searchAcc);
+        Product product = Algorithm.find(ProductController.productTable, searchProd);
+
+        Payment payment = Algorithm.find(paymentTable, (Predicate<Payment>) pred -> product.id == productId && account.id == buyerId);
+
+        Shipment shipment = new Shipment(shipmentAddress, 0, shipmentPlan, null);
+        payment.shipment = shipment;
+
+        if(Algorithm.exists(AccountController.accountTable, searchAcc) && Algorithm.exists(ProductController.productTable, searchProd) && account.balance >= product.price * productCount) {
+            account.balance -= payment.getTotalPay(product) * productCount;
+            payment.history.add(new Payment.Record(Invoice.Status.WAITING_CONFIRMATION, "Waiting Confirmation"));
+            paymentTable.add(payment);
+            poolThread.add(payment);
+            return payment;
+        }
         return null;
     }
 
@@ -47,7 +77,16 @@ public class PaymentController implements BasicGetController<Payment>{
     }
 
     @PostMapping("/{id}/submit")
-    boolean submit(int id, String receipt) {
+    boolean submit(@PathVariable int id, @RequestParam String receipt) {
+        Predicate<Payment> searchPayment = paymentSearch -> paymentSearch.id == id;
+        Algorithm.find(paymentTable, searchPayment);
+        Payment payment = Algorithm.find(paymentTable, searchPayment);
+
+        if(Algorithm.exists(paymentTable, searchPayment) && payment.history.get(payment.history.size() - 1).status.equals(Invoice.Status.ON_PROGRESS) && !payment.shipment.receipt.isBlank()) {
+            payment.shipment.receipt = receipt;
+            payment.history.add(new Payment.Record(Invoice.Status.ON_DELIVERY, "Packet on Delivery"));
+            return true;
+        }
         return false;
     }
 

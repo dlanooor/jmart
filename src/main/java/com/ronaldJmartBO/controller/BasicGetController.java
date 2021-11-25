@@ -1,6 +1,5 @@
 package com.ronaldJmartBO.controller;
 import com.ronaldJmartBO.Algorithm;
-import com.ronaldJmartBO.Product;
 import com.ronaldJmartBO.dbjson.JsonTable;
 import com.ronaldJmartBO.dbjson.Serializable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,7 @@ public interface BasicGetController<T extends Serializable> {
 
     @GetMapping("/page")
     default List<T> getPage (@PathVariable int page, @PathVariable int pageSize){
-        return (List<T>) Algorithm.<T>paginate((List<Product>) getJsonTable(), page, pageSize, (e) -> true);
+        return Algorithm.<T>paginate(getJsonTable(), page, pageSize, e -> true);
     }
 
     public abstract JsonTable<T> getJsonTable();

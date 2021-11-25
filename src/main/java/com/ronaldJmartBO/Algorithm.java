@@ -8,6 +8,69 @@ public class Algorithm {
     private Algorithm() {
     }
 
+    public static <T> List<T> paginate(Iterable<T> iterable, int page, int pageSize, Predicate<T> pred) {
+        List<T> pagination = new ArrayList<>();
+        Iterator<T> iterator = iterable.iterator();
+
+        if(pageSize < 0 || page < 0) {
+            throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
+        }
+
+        int startPage = page * pageSize;
+        int size = ((Collection<?>) iterator).size();
+
+        if(iterator == null || size <= startPage)
+            return Collections.emptyList();
+
+        while(iterator.hasNext()) {
+            if(pred.predicate(iterator.next()))
+                pagination.add(iterator.next());
+        }
+
+        return pagination.subList(startPage, Math.min(startPage + pageSize, pagination.size()));
+    }
+
+    public static <T> List<T> paginate(T[] array, int page, int pageSize, Predicate<T> pred) {
+        List<T> pagination = new ArrayList<>();
+
+        if(pageSize < 0 || page < 0) {
+            throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
+        }
+
+        int startPage = page * pageSize;
+
+        if(array == null || array.length <= startPage)
+            return Collections.emptyList();
+
+        for(T value : array) {
+            if(pred.predicate(value))
+                pagination.add(value);
+        }
+
+        return pagination.subList(startPage, Math.min(startPage + pageSize, pagination.size()));
+    }
+
+    public static <T> List<T> paginate(Iterator<T> iterator, int page, int pageSize, Predicate<T> pred) {
+        List<T> pagination = new ArrayList<>();
+
+        if(pageSize < 0 || page < 0) {
+            throw new IllegalArgumentException("Invalid Page Size: " + pageSize);
+        }
+
+        int startPage = page * pageSize;
+        int size = ((Collection<?>) iterator).size();
+
+        if(iterator == null || size <= startPage)
+            return Collections.emptyList();
+
+        while(iterator.hasNext()) {
+            if(pred.predicate(iterator.next()))
+                pagination.add(iterator.next());
+        }
+
+        return pagination.subList(startPage, Math.min(startPage + pageSize, pagination.size()));
+    }
+
     public static List<Product> paginate(List<Product> list, int page, int pageSize, Predicate<Product> pred) {
         List<Product> pagination = new ArrayList<>();
 

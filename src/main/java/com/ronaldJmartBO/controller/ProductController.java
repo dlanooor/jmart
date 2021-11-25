@@ -36,6 +36,17 @@ public class ProductController implements BasicGetController<Product>{
 
     @GetMapping("/getFiltered")
     List<Product> getProductFiltered(@RequestParam int page, @RequestParam int pageSize, @RequestParam int accountId, @RequestParam String search, @RequestParam int minPrice, @RequestParam int maxPrice, @RequestParam ProductCategory category) {
-        return null;
+        Predicate<Product> filterAccountId = filterAcc -> filterAcc.accountId == accountId;
+        Predicate<Product> containSearch = searchContain -> searchContain.name.toLowerCase().contains(search.toLowerCase());
+        Predicate<Product> minFilterPrice = priceMin -> priceMin.price >= minPrice;
+        Predicate<Product> maxFilterPrice = priceMax -> priceMax.price <= maxPrice;
+        Predicate<Product> categoryFilter = filterCategory -> filterCategory.category.equals(category);
+        Predicate<Product> pred = filtered -> Algorithm.exists(getJsonTable(), filterAccountId)
+                                                && Algorithm.exists(getJsonTable(), containSearch)
+                                                && Algorithm.exists(getJsonTable(), minFilterPrice)
+                                                && Algorithm.exists(getJsonTable(), maxFilterPrice)
+                                                && Algorithm.exists(getJsonTable(), categoryFilter);
+
+        return Algorithm.paginate(getJsonTable(), page, pageSize, pred);
     }
 }
