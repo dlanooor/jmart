@@ -6,32 +6,51 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Account
+ * Account Model
  *
  * @author Ronald Grant
- * @version 27 Sept 2021
+ * @version 2.0
+ * @since 3 December 2021
  */
-
-// sebelum FileParser dihapus
-// public class Account extends Recognizable implements FileParser
 public class Account extends Serializable
 {
+    /**
+     * The Name.
+     */
     public String name;
+    /**
+     * The Email.
+     */
     public String email;
+    /**
+     * The Password.
+     */
     public String password;
+    /**
+     * The Balance.
+     */
     public double balance;
+    /**
+     * The Store.
+     */
     public Store store;
+    /**
+     * The constant REGEX_EMAIL.
+     */
     public static final String REGEX_EMAIL = "^\\w+([\\.]?[&\\*~\\w+])*@\\w+([\\.-]?)*(\\.\\w{2,3})+$";
+    /**
+     * The constant REGEX_PASSWORD.
+     */
     public static final String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$)(?=.*[A-Z]).{8,}$";
 
-//    sebelum super dihapus (pt modul 5)
-//    Account(int id, String name, String email, String password) {
-//        super(id);
-//        this.name = name;
-//        this.email = email;
-//        this.password = password;
-//    }
-
+    /**
+     * Instantiates a new Account.
+     *
+     * @param name     the name
+     * @param email    the email
+     * @param password the password
+     * @param balance  the balance
+     */
     public Account(String name, String email, String password, double balance) {
         this.name = name;
         this.email = email;
@@ -45,7 +64,12 @@ public class Account extends Serializable
                 "\npassword: " + password +
                 "\nbalance: " + balance;
     }
-    
+
+    /**
+     * Validate boolean.
+     *
+     * @return the boolean
+     */
     public boolean validate() {
         Pattern patternEmail = Pattern.compile(REGEX_EMAIL);
         Matcher matcherEmail = patternEmail.matcher(email);
@@ -55,14 +79,4 @@ public class Account extends Serializable
         
         return matcherEmail.find() && matcherPassword.find();
     }
-    
-//    @Override
-//    public boolean read(String content) {
-//        return false;
-//    }
-//
-//    @Override
-//    public Object write() {
-//        return null;
-//    }
 }

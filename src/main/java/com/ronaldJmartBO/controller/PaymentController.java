@@ -5,16 +5,41 @@ import com.ronaldJmartBO.dbjson.JsonAutowired;
 import com.ronaldJmartBO.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Represents Payment Controller to Connect with Android
+ *
+ * @author Ronald Grant
+ * @version 1.0
+ * @since 3 December 2021
+ */
 @RestController
 @RequestMapping("/payment")
 public class PaymentController implements BasicGetController<Payment>{
+    /**
+     * The constant DELIVERED_LIMIT_MS.
+     */
     public static final long DELIVERED_LIMIT_MS = 10L;
+    /**
+     * The constant ON_DELIVERY_LIMIT_MS.
+     */
     public static final long ON_DELIVERY_LIMIT_MS = 20L;
+    /**
+     * The constant ON_PROGRESS_LIMIT_MS.
+     */
     public static final long ON_PROGRESS_LIMIT_MS = 30L;
+    /**
+     * The constant WAITING_CONF_LIMIT_MS.
+     */
     public static final long WAITING_CONF_LIMIT_MS = 40L;
 
-    @JsonAutowired(value = Payment.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\account.json")
+    /**
+     * The Payment table.
+     */
+    @JsonAutowired(value = Payment.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\json\\payment.json")
     public static JsonTable<Payment> paymentTable;
+    /**
+     * The Pool thread.
+     */
     public static ObjectPoolThread<Payment> poolThread;
 
     static
@@ -23,6 +48,12 @@ public class PaymentController implements BasicGetController<Payment>{
         poolThread.start();
     }
 
+    /**
+     * Accept boolean.
+     *
+     * @param id the id
+     * @return the boolean
+     */
     @PostMapping("/{id}/accept")
     boolean accept(@PathVariable int id) {
         Predicate<Payment> searchPayment = paymentSearch -> paymentSearch.id == id;
@@ -36,6 +67,12 @@ public class PaymentController implements BasicGetController<Payment>{
         return false;
     }
 
+    /**
+     * Cancel boolean.
+     *
+     * @param id the id
+     * @return the boolean
+     */
     @PostMapping("/{id}/cancel")
     boolean cancel(@PathVariable int id) {
         Predicate<Payment> searchPayment = paymentSearch -> paymentSearch.id == id;
@@ -49,6 +86,16 @@ public class PaymentController implements BasicGetController<Payment>{
         return false;
     }
 
+    /**
+     * Create payment.
+     *
+     * @param buyerId         the buyer id
+     * @param productId       the product id
+     * @param productCount    the product count
+     * @param shipmentAddress the shipment address
+     * @param shipmentPlan    the shipment plan
+     * @return the payment
+     */
     @PostMapping("/create")
     Payment create(@RequestParam int buyerId, @RequestParam int productId, @RequestParam int productCount, @RequestParam String shipmentAddress, @RequestParam byte shipmentPlan) {
         Predicate<Account> searchAcc = accSearch -> accSearch.id == buyerId;
@@ -76,6 +123,13 @@ public class PaymentController implements BasicGetController<Payment>{
         return paymentTable;
     }
 
+    /**
+     * Submit boolean.
+     *
+     * @param id      the id
+     * @param receipt the receipt
+     * @return the boolean
+     */
     @PostMapping("/{id}/submit")
     boolean submit(@PathVariable int id, @RequestParam String receipt) {
         Predicate<Payment> searchPayment = paymentSearch -> paymentSearch.id == id;
@@ -90,6 +144,12 @@ public class PaymentController implements BasicGetController<Payment>{
         return false;
     }
 
+    /**
+     * Timekeeper boolean.
+     *
+     * @param payment the payment
+     * @return the boolean
+     */
     static boolean timekeeper(Payment payment) {
         long elapsedTime = (new java.util.Date()).getTime() - payment.history.get(payment.history.size()-1).date.getTime();
 

@@ -12,22 +12,51 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents Account Controller to Connect with Android
+ *
+ * @author Ronald Grant
+ * @version 1.0
+ * @since 3 December 2021
+ */
 @RestController
 @RequestMapping("/account")
 public class AccountController implements BasicGetController<Account>
 {
+    /**
+     * The constant REGEX_EMAIL.
+     */
     public static final String REGEX_EMAIL = "^\\w+([\\.]?[&\\*~\\w+])*@\\w+([\\.-]?)*(\\.\\w{2,3})+$";
+    /**
+     * The constant REGEX_PASSWORD.
+     */
     public static final String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$)(?=.*[A-Z]).{8,}$";
+    /**
+     * The constant REGEX_PATTERN_EMAIL.
+     */
     public static final Pattern REGEX_PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
+    /**
+     * The constant REGEX_PATTERN_PASSWORD.
+     */
     public static final Pattern REGEX_PATTERN_PASSWORD = Pattern.compile(REGEX_PASSWORD);
 
-    @JsonAutowired(value = Account.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\account.json")
+    /**
+     * The Account table.
+     */
+    @JsonAutowired(value = Account.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\json\\account.json")
     public static JsonTable<Account> accountTable;
 
     public JsonTable<Account> getJsonTable() {
         return accountTable;
     }
 
+    /**
+     * Login account.
+     *
+     * @param email    the email
+     * @param password the password
+     * @return the account
+     */
     @PostMapping("/login")
     Account login(@RequestParam String email, @RequestParam String password) {
         for(Account account : accountTable) {
@@ -60,6 +89,14 @@ public class AccountController implements BasicGetController<Account>
         return null;
     }
 
+    /**
+     * Register account.
+     *
+     * @param name     the name
+     * @param email    the email
+     * @param password the password
+     * @return the account
+     */
     @PostMapping("/register")
     Account register(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
         Matcher matcherEmail = REGEX_PATTERN_EMAIL.matcher(email);
@@ -104,20 +141,35 @@ public class AccountController implements BasicGetController<Account>
         return null;
     }
 
+    /**
+     * Register store store.
+     *
+     * @param id          the id
+     * @param name        the name
+     * @param address     the address
+     * @param phoneNumber the phone number
+     * @return the store
+     */
     @PostMapping("/{id}/registerStore")
     Store registerStore(@PathVariable int id, @RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber) {
         for(Account account : accountTable) {
-            if(account.id == id && account.store != null){
+            if(account.id == id && account.store == null){
                 account.store = new Store(name, address, phoneNumber, 0.0);
                 return account.store;
             }
-
         }
         return null;
     }
 
+    /**
+     * Top up boolean.
+     *
+     * @param id      the id
+     * @param balance the balance
+     * @return the boolean
+     */
     @PostMapping("/{id}/topUp")
-    boolean topUp(int id, @RequestParam double balance) {
+    boolean topUp(@PathVariable int id, @RequestParam Double balance) {
         for(Account account : accountTable) {
             if(account.id == id) {
                 account.balance += balance;
@@ -126,22 +178,4 @@ public class AccountController implements BasicGetController<Account>
         }
         return false;
     }
-
-//    @GetMapping
-//    String index() { return "account page"; }
-//
-//    @PostMapping("/register")
-//    Account register
-//            (
-//                    @RequestParam String name,
-//                    @RequestParam String email,
-//                    @RequestParam String password
-//            )
-//    {
-//        return new Account(name, email, password, 0);
-//    }
-//
-//    @GetMapping("/{id}")
-//    String getById(@PathVariable int id) { return "account id " + id + " not found!"; }
 }
-

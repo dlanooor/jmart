@@ -11,31 +11,36 @@ import java.util.Collections;
 import java.util.HashMap;
 
 
-/** 
+/**
  * Handle load and store for {@link JsonTable}
+ *
  * @author Netlab Team
  * @version 0.1
  */
 @SuppressWarnings("unchecked")
 public class JsonDBEngine
-{	
-	/** Interval in milliseconds for {@link #autosaver()} */
+{
+	/**
+	 * Interval in milliseconds for {@link #autosaver()}
+	 */
 	public static long autosaveIntervalMS = 10000;
+	/**
+	 * The constant sleepIntervalMS.
+	 */
 	public static long sleepIntervalMS = 100;
 	
 	private static boolean exitSignal = false;
 	private static Thread autosaveThread;
 	private static final HashMap<String, JsonTable<?>> loadedJsonTable = new HashMap<>();
-	
+
 	/**
-	  * Scan for {@link JsonAutowired} then load the json databases.
-	  * This will run a thread to write JsonTable with a given interval.
-	  * Furthermore, this also adjust the counter on {@link Serializable}.
-	  * @param sourceClass referring to it's package name to scan for a candidate components
-	  * which contain {@link JsonAutowired}. Achieved by:
-	  * {@link ClassPathScanningCandidateComponentProvider#findCandidateComponents(String)}
-	  */
-    public static void Run(Class<?> sourceClass)
+	 * Scan for {@link JsonAutowired} then load the json databases.
+	 * This will run a thread to write JsonTable with a given interval.
+	 * Furthermore, this also adjust the counter on {@link Serializable}.
+	 *
+	 * @param sourceClass referring to it's package name to scan for a candidate components which contain {@link JsonAutowired}. Achieved by: {@link ClassPathScanningCandidateComponentProvider#findCandidateComponents(String)}
+	 */
+	public static void Run(Class<?> sourceClass)
     {
     	if (autosaveThread != null)
     	{
@@ -110,7 +115,10 @@ public class JsonDBEngine
 			});
 	 	}
 	}
-	
+
+	/**
+	 * Join.
+	 */
 	@PreDestroy
 	public static void join()
 	{

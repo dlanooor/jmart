@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for {@link JsonDBEngine} to automatically load a {@link JsonTable}.
  * A reference to this must be a static field type.
+ *
  * @author Netlab Team
  * @version 0.1
  */
@@ -15,6 +16,17 @@ import java.lang.annotation.Target;
 @Target(value={ElementType.FIELD})
 public @interface JsonAutowired
 {
+	/**
+	 * Value class.
+	 *
+	 * @return the class
+	 */
 	Class<?> value();
+
+	/**
+	 * Filepath string.
+	 *
+	 * @return the string
+	 */
 	String filepath();
 }

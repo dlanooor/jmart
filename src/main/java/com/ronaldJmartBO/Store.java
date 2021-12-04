@@ -6,38 +6,47 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Store
+ * Store Model
  *
  * @author Ronald Grant
- * @version 27 Sept 2021
+ * @version 1.0
+ * @since 27 Sept 2021
  */
-
-// sebelum FileParser dihapus
-// public class Store extends Recognizable implements FileParser
 public class Store extends Serializable
 {
+    /**
+     * The Name.
+     */
     public String name;
+    /**
+     * The Address.
+     */
     public String address;
+    /**
+     * The Phone number.
+     */
     public String phoneNumber;
+    /**
+     * The Balance.
+     */
     public double balance;
+    /**
+     * The constant REGEX_PHONE.
+     */
     public static final String REGEX_PHONE = "^[0-9]{9,12}\b";
+    /**
+     * The constant REGEX_NAME.
+     */
     public static final String REGEX_NAME = "^[A-Z][a-z\\sa-z]{4,19}\b";
-    
-//    public Store(int accountId, String name, String address, String phoneNumber)
-//    {
-//        super(accountId);
-//        this.name = name;
-//        this.address = address;
-//        this.phoneNumber = phoneNumber;
-//    }
-    
-//    public Store(Account account, String name, String address, String phoneNumber)
-//    {
-//        this.name = name;
-//        this.address = address;
-//        this.phoneNumber = phoneNumber;
-//    }
 
+    /**
+     * Instantiates a new Store.
+     *
+     * @param name        the name
+     * @param address     the address
+     * @param phoneNumber the phone number
+     * @param balance     the balance
+     */
     public Store(String name, String address, String phoneNumber, double balance)
     {
         this.name = name;
@@ -51,7 +60,12 @@ public class Store extends Serializable
                 "\naddress: " + address +
                 "\nphoneNumber: " + phoneNumber;
     }
-    
+
+    /**
+     * Validate boolean.
+     *
+     * @return the boolean
+     */
     public boolean validate() {
         Pattern patternPhone = Pattern.compile(REGEX_PHONE);
         Matcher matcherPhone = patternPhone.matcher(phoneNumber);
@@ -61,14 +75,4 @@ public class Store extends Serializable
         
         return matcherPhone.find() && matcherName.find();
     }
-    
-//    @Override
-//    public boolean read(String content) {
-//        return false;
-//    }
-//
-//    @Override
-//    public Object write() {
-//        return null;
-//    }
 }
