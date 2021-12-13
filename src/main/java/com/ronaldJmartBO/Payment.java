@@ -78,6 +78,6 @@ public class Payment extends Invoice
      * @return the double
      */
     public double getTotalPay(Product product){
-       return product.price - product.price * product.discount;
+       return product.price - (product.price * (product.discount / 100));
     }
 }

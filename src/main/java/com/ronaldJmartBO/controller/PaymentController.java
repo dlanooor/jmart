@@ -86,6 +86,18 @@ public class PaymentController implements BasicGetController<Payment>{
         return false;
     }
 
+//    @GetMapping("/{id}/invoice")
+//    List<Payment> getPayment(@PathVariable int id, @RequestParam int page, @RequestParam int pageSize) {
+//        Predicate<Payment> predicates = payment -> (payment.buyerId == id || payment.buyerId != id);
+//        List<Payment> list = new ArrayList<>();
+//
+//        for(Payment payment : getJsonTable()) {
+//            list.add(payment);
+//        }
+//
+//        return Algorithm.<Payment>paginate(list, page, pageSize, predicates);
+//    }
+
     /**
      * Create payment.
      *
@@ -101,16 +113,27 @@ public class PaymentController implements BasicGetController<Payment>{
         Predicate<Account> searchAcc = accSearch -> accSearch.id == buyerId;
         Predicate<Product> searchProd = prodSearch -> prodSearch.id == productId;
 
-        Account account = Algorithm.find(AccountController.accountTable, searchAcc);
-        Product product = Algorithm.find(ProductController.productTable, searchProd);
+        Account accountPayment = null;
+        Product productPayment = null;
 
-        Payment payment = Algorithm.find(paymentTable, (Predicate<Payment>) pred -> product.id == productId && account.id == buyerId);
+        for(Account account : AccountController.accountTable) {
+            if(account.id == buyerId)
+                accountPayment = account;
+        }
 
-        Shipment shipment = new Shipment(shipmentAddress, 0, shipmentPlan, null);
-        payment.shipment = shipment;
+        for(Product product : ProductController.productTable) {
+            if(product.id == productId)
+                productPayment = product;
+        }
 
-        if(Algorithm.exists(AccountController.accountTable, searchAcc) && Algorithm.exists(ProductController.productTable, searchProd) && account.balance >= product.price * productCount) {
-            account.balance -= payment.getTotalPay(product) * productCount;
+        if(accountPayment != null && productPayment != null && accountPayment.balance >= ((productPayment.price - (productPayment.price * (productPayment.discount / 100))) * productCount)) {
+            Shipment shipment = new Shipment(shipmentAddress, 10000, shipmentPlan, "Receipt");
+            Payment payment = new Payment(buyerId, productId, productCount, shipment);
+
+            for(Account account : AccountController.accountTable) {
+                if(account.id == buyerId)
+                    account.balance = account.balance - payment.getTotalPay(productPayment) * productCount;
+            }
             payment.history.add(new Payment.Record(Invoice.Status.WAITING_CONFIRMATION, "Waiting Confirmation"));
             paymentTable.add(payment);
             poolThread.add(payment);
