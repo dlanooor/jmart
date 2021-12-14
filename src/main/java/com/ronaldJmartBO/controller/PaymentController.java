@@ -5,6 +5,9 @@ import com.ronaldJmartBO.dbjson.JsonAutowired;
 import com.ronaldJmartBO.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents Payment Controller to Connect with Android
  *
@@ -86,17 +89,22 @@ public class PaymentController implements BasicGetController<Payment>{
         return false;
     }
 
-//    @GetMapping("/{id}/invoice")
-//    List<Payment> getPayment(@PathVariable int id, @RequestParam int page, @RequestParam int pageSize) {
-//        Predicate<Payment> predicates = payment -> (payment.buyerId == id || payment.buyerId != id);
-//        List<Payment> list = new ArrayList<>();
-//
-//        for(Payment payment : getJsonTable()) {
-//            list.add(payment);
-//        }
-//
+    @GetMapping("/{id}/invoice")
+    List<Payment> getPayment(@PathVariable int id, @RequestParam int page, @RequestParam int pageSize) {
+        Predicate<Payment> predicates = payment -> (payment.buyerId == id || payment.buyerId != id);
+        List<Payment> list = new ArrayList<>();
+
+        for(Payment payment : getJsonTable()) {
+            if(payment.buyerId == id)
+                list.add(payment);
+        }
+
+        return list;
+//        System.out.println("id: " + id);
+//        System.out.println("page: " + page);
+//        System.out.println("pagesize: " + pageSize);
 //        return Algorithm.<Payment>paginate(list, page, pageSize, predicates);
-//    }
+    }
 
     /**
      * Create payment.

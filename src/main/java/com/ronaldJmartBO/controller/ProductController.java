@@ -63,13 +63,12 @@ public class ProductController implements BasicGetController<Product>{
      */
     @GetMapping("/{id}/store")
     List<Product> getProductByStore(@PathVariable int id, @RequestParam int page, @RequestParam int pageSize) {
-        Predicate<Product> predicates = prod -> prod.accountId == id;
+        Predicate<Product> predicates = prod -> prod.accountId == id || prod.accountId != id;
         List<Product> list = new ArrayList<>();
 
         for(Product product : getJsonTable()) {
             list.add(product);
         }
-
         return Algorithm.<Product>paginate(list, page, pageSize, predicates);
     }
 
@@ -89,7 +88,8 @@ public class ProductController implements BasicGetController<Product>{
     List<Product> getProductFiltered(@RequestParam int page, @RequestParam int pageSize, @RequestParam int accountId,
                                      @RequestParam String search, @RequestParam int minPrice, @RequestParam int maxPrice,
                                      @RequestParam ProductCategory category) {
-        Predicate<Product> filter = filtered -> filtered.accountId == accountId
+        Predicate<Product> filter = filtered ->
+                filtered.accountId == accountId || filtered.accountId != accountId
                 && filtered.name.toLowerCase().contains((search.toLowerCase()))
                 && filtered.price >= minPrice
                 && filtered.price <= maxPrice

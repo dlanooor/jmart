@@ -142,4 +142,12 @@ public class Shipment
             this.bit = bit;
         }
     }
+
+    @Override
+    public String toString() {
+        return  "address: " + address +
+                "\ncost: " + cost +
+                "\nplan: " + plan +
+                "\nreceipt: " + receipt;
+    }
 }

@@ -80,4 +80,13 @@ public class Payment extends Invoice
     public double getTotalPay(Product product){
        return product.price - (product.price * (product.discount / 100));
     }
+
+    @Override
+    public String toString(){
+        return  "buyerId: " + buyerId +
+                "\nproductId: " + productId +
+                "\nproductCount: " + productCount +
+                "\nshipment: " + shipment +
+                "\nhistory: " + history;
+    }
 }

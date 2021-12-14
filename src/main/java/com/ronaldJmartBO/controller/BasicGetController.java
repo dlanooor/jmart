@@ -33,10 +33,6 @@ public interface BasicGetController<T extends Serializable> {
         Predicate<T> pred = element -> true;
         List<T> list = Algorithm.collect(getJsonTable(), pred);
 
-        System.out.println(list);
-        System.out.println(page);
-        System.out.println(pageSize);
-
         return Algorithm.<T>paginate(list, page, pageSize, pred);
     }
 
