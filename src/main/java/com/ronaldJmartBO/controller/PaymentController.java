@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ronaldJmartBO.controller.AccountController.accountTable;
+import static com.ronaldJmartBO.controller.ProductController.productTable;
+
 /**
  * Represents Payment Controller to Connect with Android
  *
@@ -91,7 +94,6 @@ public class PaymentController implements BasicGetController<Payment>{
 
     @GetMapping("/{id}/invoice")
     List<Payment> getPayment(@PathVariable int id, @RequestParam int page, @RequestParam int pageSize) {
-        Predicate<Payment> predicates = payment -> (payment.buyerId == id || payment.buyerId != id);
         List<Payment> list = new ArrayList<>();
 
         for(Payment payment : getJsonTable()) {
@@ -100,10 +102,20 @@ public class PaymentController implements BasicGetController<Payment>{
         }
 
         return list;
-//        System.out.println("id: " + id);
-//        System.out.println("page: " + page);
-//        System.out.println("pagesize: " + pageSize);
-//        return Algorithm.<Payment>paginate(list, page, pageSize, predicates);
+    }
+
+    @GetMapping("/{accountId}/invoiceStore")
+    List<Payment> getPaymentStore(@PathVariable int accountId, @RequestParam int page, @RequestParam int pageSize) {
+        List<Payment> list = new ArrayList<>();
+
+        for(Payment payment : getJsonTable()) {
+            for (Product product : productTable){
+                if(product.accountId == accountId)
+                    list.add(payment);
+            }
+        }
+
+        return list;
     }
 
     /**
@@ -124,12 +136,12 @@ public class PaymentController implements BasicGetController<Payment>{
         Account accountPayment = null;
         Product productPayment = null;
 
-        for(Account account : AccountController.accountTable) {
+        for(Account account : accountTable) {
             if(account.id == buyerId)
                 accountPayment = account;
         }
 
-        for(Product product : ProductController.productTable) {
+        for(Product product : productTable) {
             if(product.id == productId)
                 productPayment = product;
         }
@@ -138,7 +150,7 @@ public class PaymentController implements BasicGetController<Payment>{
             Shipment shipment = new Shipment(shipmentAddress, 10000, shipmentPlan, "Receipt");
             Payment payment = new Payment(buyerId, productId, productCount, shipment);
 
-            for(Account account : AccountController.accountTable) {
+            for(Account account : accountTable) {
                 if(account.id == buyerId)
                     account.balance = account.balance - payment.getTotalPay(productPayment) * productCount;
             }
@@ -170,6 +182,13 @@ public class PaymentController implements BasicGetController<Payment>{
         if(Algorithm.exists(paymentTable, searchPayment) && payment.history.get(payment.history.size() - 1).status.equals(Invoice.Status.ON_PROGRESS) && !payment.shipment.receipt.isBlank()) {
             payment.shipment.receipt = receipt;
             payment.history.add(new Payment.Record(Invoice.Status.ON_DELIVERY, "Packet on Delivery"));
+            for(Product product : productTable) {
+                for(Account account : accountTable) {
+                    if(account.id == product.accountId && product.id == payment.productId)
+                        account.store.balance += ((product.price - product.price * (product.discount / 100)) * payment.productCount);
+                }
+            }
+
             return true;
         }
         return false;

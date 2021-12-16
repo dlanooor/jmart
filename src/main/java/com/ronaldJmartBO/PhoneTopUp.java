@@ -37,6 +37,6 @@ public class PhoneTopUp extends Invoice {
      * @return the total
      */
     public double getTotal(Product product) {
-        return product.price - product.price * product.discount;
+        return product.price - product.price * (product.discount / 100);
     }
 }
