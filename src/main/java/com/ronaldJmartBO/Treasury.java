@@ -49,7 +49,14 @@ public class Treasury
             return getDiscountedPrice(price, discount) * COMMISSION_MULTIPLIER;
         }
     }
-    
+
+    /**
+     * Gets Discounted Price.
+     *
+     * @param price    the price
+     * @param discount the discount
+     * @return Discounted Price
+     */
     private static double getDiscountedPrice(double price, double discount) {
         if(discount > 100.0) {
             discount = 100;

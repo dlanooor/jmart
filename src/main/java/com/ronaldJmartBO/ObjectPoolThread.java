@@ -82,7 +82,7 @@ public class ObjectPoolThread<T> extends Thread{
     }
 
     /**
-     * Size int.
+     * Object Pool Size.
      *
      * @return the int
      */

@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/coupon")
 public class CouponController implements BasicGetController<Coupon> {
     /**
-     * The Coupon table.
+     * The Coupon table (get from .json file).
      */
     @JsonAutowired(value = Coupon.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\json\\coupon.json")
     public static JsonTable<Coupon> couponTable;
@@ -28,7 +28,7 @@ public class CouponController implements BasicGetController<Coupon> {
     }
 
     /**
-     * Can apply boolean.
+     * Can apply Coupon.
      *
      * @param id       the id
      * @param price    the price
@@ -45,7 +45,7 @@ public class CouponController implements BasicGetController<Coupon> {
     }
 
     /**
-     * Is used boolean.
+     * Is Coupon used.
      *
      * @param id the id
      * @return the boolean
@@ -60,7 +60,7 @@ public class CouponController implements BasicGetController<Coupon> {
     }
 
     /**
-     * Gets available.
+     * Gets available Coupon.
      *
      * @param page     the page
      * @param pageSize the page size

@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 public interface BasicGetController<T extends Serializable> {
     /**
-     * Gets page.
+     * Gets page from pagination in Algorithm Response.
      *
      * @param page     the page
      * @param pageSize the page size
@@ -37,7 +37,7 @@ public interface BasicGetController<T extends Serializable> {
     }
 
     /**
-     * Get by id t.
+     * Get by id Response.
      *
      * @param id the id
      * @return the t

@@ -44,15 +44,15 @@ public class Payment extends Invoice
     }
 
     /**
-     * The Shipment.
+     * The Payment Shipment.
      */
     public Shipment shipment;
     /**
-     * The Product count.
+     * The Payment Product count.
      */
     public int productCount;
     /**
-     * The History.
+     * The Payment History.
      */
     public ArrayList<Record> history;
 
@@ -72,7 +72,7 @@ public class Payment extends Invoice
     }
 
     /**
-     * Get total pay double.
+     * Get total Payment.
      *
      * @param product the product
      * @return the double

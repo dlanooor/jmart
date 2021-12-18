@@ -39,7 +39,7 @@ public class PaymentController implements BasicGetController<Payment>{
     public static final long WAITING_CONF_LIMIT_MS = 40L;
 
     /**
-     * The Payment table.
+     * The Payment table (get from .json file).
      */
     @JsonAutowired(value = Payment.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\json\\payment.json")
     public static JsonTable<Payment> paymentTable;
@@ -55,7 +55,7 @@ public class PaymentController implements BasicGetController<Payment>{
     }
 
     /**
-     * Accept boolean.
+     * Accept Payment from Store Account.
      *
      * @param id the id
      * @return the boolean
@@ -74,7 +74,7 @@ public class PaymentController implements BasicGetController<Payment>{
     }
 
     /**
-     * Cancel boolean.
+     * Cancel Payment from Store Account.
      *
      * @param id the id
      * @return the boolean
@@ -92,6 +92,14 @@ public class PaymentController implements BasicGetController<Payment>{
         return false;
     }
 
+    /**
+     * Gets Payment Invoice from Account.
+     *
+     * @param id       the id
+     * @param page     the page
+     * @param pageSize the page size
+     * @return the payment
+     */
     @GetMapping("/{id}/invoice")
     List<Payment> getPayment(@PathVariable int id, @RequestParam int page, @RequestParam int pageSize) {
         List<Payment> list = new ArrayList<>();
@@ -104,14 +112,23 @@ public class PaymentController implements BasicGetController<Payment>{
         return list;
     }
 
+    /**
+     * Gets Payment Invoice from Store Account.
+     *
+     * @param accountId the account id
+     * @param page      the page
+     * @param pageSize  the page size
+     * @return the payment store
+     */
     @GetMapping("/{accountId}/invoiceStore")
     List<Payment> getPaymentStore(@PathVariable int accountId, @RequestParam int page, @RequestParam int pageSize) {
         List<Payment> list = new ArrayList<>();
 
         for(Payment payment : getJsonTable()) {
             for (Product product : productTable){
-                if(product.accountId == accountId)
+                if(product.accountId == accountId) {
                     list.add(payment);
+                }
             }
         }
 
@@ -119,7 +136,7 @@ public class PaymentController implements BasicGetController<Payment>{
     }
 
     /**
-     * Create payment.
+     * Create payment from Account.
      *
      * @param buyerId         the buyer id
      * @param productId       the product id
@@ -167,7 +184,7 @@ public class PaymentController implements BasicGetController<Payment>{
     }
 
     /**
-     * Submit boolean.
+     * Submit Payment from Store Account.
      *
      * @param id      the id
      * @param receipt the receipt
@@ -195,7 +212,7 @@ public class PaymentController implements BasicGetController<Payment>{
     }
 
     /**
-     * Timekeeper boolean.
+     * Timekeeper used For Threading.
      *
      * @param payment the payment
      * @return the boolean

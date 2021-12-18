@@ -24,24 +24,24 @@ import java.util.regex.Pattern;
 public class AccountController implements BasicGetController<Account>
 {
     /**
-     * The constant REGEX_EMAIL.
+     * The constant REGEX_EMAIL for matcher.
      */
     public static final String REGEX_EMAIL = "^\\w+([\\.]?[&\\*~\\w+])*@\\w+([\\.-]?)*(\\.\\w{2,3})+$";
     /**
-     * The constant REGEX_PASSWORD.
+     * The constant REGEX_PASSWORD for matcher.
      */
     public static final String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$)(?=.*[A-Z]).{8,}$";
     /**
-     * The constant REGEX_PATTERN_EMAIL.
+     * The constant REGEX_PATTERN_EMAIL from REGEX.
      */
     public static final Pattern REGEX_PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
     /**
-     * The constant REGEX_PATTERN_PASSWORD.
+     * The constant REGEX_PATTERN_PASSWORD from REGEX.
      */
     public static final Pattern REGEX_PATTERN_PASSWORD = Pattern.compile(REGEX_PASSWORD);
 
     /**
-     * The Account table.
+     * The Account table (get from .json file).
      */
     @JsonAutowired(value = Account.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\json\\account.json")
     public static JsonTable<Account> accountTable;
@@ -51,7 +51,7 @@ public class AccountController implements BasicGetController<Account>
     }
 
     /**
-     * Login account.
+     * Login account response.
      *
      * @param email    the email
      * @param password the password
@@ -90,7 +90,7 @@ public class AccountController implements BasicGetController<Account>
     }
 
     /**
-     * Register account.
+     * Register account request.
      *
      * @param name     the name
      * @param email    the email
@@ -142,7 +142,7 @@ public class AccountController implements BasicGetController<Account>
     }
 
     /**
-     * Register store store.
+     * Register store response.
      *
      * @param id          the id
      * @param name        the name
@@ -162,7 +162,7 @@ public class AccountController implements BasicGetController<Account>
     }
 
     /**
-     * Top up boolean.
+     * Top up boolean response.
      *
      * @param id      the id
      * @param balance the balance

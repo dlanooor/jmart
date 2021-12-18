@@ -11,11 +11,11 @@ package com.ronaldJmartBO;
  */
 public class Pair<T, U> {
     /**
-     * The First.
+     * The First Pair.
      */
     public T first;
     /**
-     * The Second.
+     * The Second Pair.
      */
     public U second;
 

@@ -22,7 +22,7 @@ public class ProductRating
     }
 
     /**
-     * Insert.
+     * Insert ProductRating.
      *
      * @param rating the rating
      */
@@ -32,7 +32,7 @@ public class ProductRating
     }
 
     /**
-     * Gets average.
+     * Gets ProductRating average.
      *
      * @return the average
      */
@@ -44,13 +44,18 @@ public class ProductRating
             return (double)(total / count);
         }
     }
-    
+
+    /**
+     * Gets ProductRating count.
+     *
+     * @return the count
+     */
     public long getCount() {
         return this.count;
     }
 
     /**
-     * Gets total.
+     * Gets ProductRating total.
      *
      * @return the total
      */

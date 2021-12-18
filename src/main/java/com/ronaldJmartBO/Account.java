@@ -15,23 +15,23 @@ import java.util.regex.Pattern;
 public class Account extends Serializable
 {
     /**
-     * The Name.
+     * The Account Name.
      */
     public String name;
     /**
-     * The Email.
+     * The Account Email.
      */
     public String email;
     /**
-     * The Password.
+     * The Account Password.
      */
     public String password;
     /**
-     * The Balance.
+     * The Account Balance.
      */
     public double balance;
     /**
-     * The Store.
+     * The Account Store.
      */
     public Store store;
     /**
@@ -57,7 +57,7 @@ public class Account extends Serializable
         this.password = password;
         this.balance = balance;
     }
-    
+
     public String toString() {
         return  "name: " + name +
                 "\nemail: " + email +
@@ -66,7 +66,7 @@ public class Account extends Serializable
     }
 
     /**
-     * Validate boolean.
+     * Validate email and password.
      *
      * @return the boolean
      */

@@ -7,7 +7,8 @@ import com.ronaldJmartBO.dbjson.Serializable;
  * Abstract Transaction
  *
  * @author Ronald Grant
- * @version 27 Sept 2021
+ * @version 1.0
+ * @since 27 Sept 2021
  */
 public abstract class Transaction extends Serializable
 {

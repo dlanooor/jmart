@@ -31,7 +31,7 @@ public class PhoneTopUp extends Invoice {
     }
 
     /**
-     * Gets total.
+     * Gets total Phone Top Up Price.
      *
      * @param product the product
      * @return the total

@@ -18,7 +18,7 @@ import java.util.Date;
 public abstract class Invoice extends Serializable
 {
     /**
-     * The enum Rating.
+     * The enum Invoice Rating.
      */
     public static enum Rating {
         /**
@@ -40,7 +40,7 @@ public abstract class Invoice extends Serializable
     }
 
     /**
-     * The enum Status.
+     * The enum Invoice Status.
      */
     public static enum Status {
         /**
@@ -78,23 +78,23 @@ public abstract class Invoice extends Serializable
     }
 
     /**
-     * The Date.
+     * The Invoice Date.
      */
     public final Date date;
     /**
-     * The Buyer id.
+     * The Invoice Buyer id.
      */
     public int buyerId;
     /**
-     * The Product id.
+     * The Invoice Product id.
      */
     public int productId;
     /**
-     * The Complaint id.
+     * The Invoice Complaint id.
      */
     public int complaintId;
     /**
-     * The Rating.
+     * The Invoice Rating.
      */
     public Rating rating;
 

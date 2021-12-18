@@ -68,7 +68,8 @@ public class Shipment
      * @param plan    the plan
      * @param receipt the receipt
      */
-// Constructor
+
+    // Constructor
     public Shipment(String address, int cost, byte plan, String receipt)
     {
         this.address = address;

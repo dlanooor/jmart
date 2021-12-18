@@ -6,28 +6,29 @@ import com.ronaldJmartBO.dbjson.Serializable;
  * Represent Coupon Model
  *
  * @author Ronald Grant
- * @version 18 Sept 2021
+ * @version 1.0
+ * @since 27 September 2021
  */
 public class Coupon extends Serializable
 {
     /**
-     * The Name.
+     * The Coupon Name.
      */
     public final String name;
     /**
-     * The Code.
+     * The Coupon Code.
      */
     public final int code;
     /**
-     * The Cut.
+     * The Coupon Cut.
      */
     public final double cut;
     /**
-     * The Type.
+     * The Coupon Type.
      */
     public final Type type;
     /**
-     * The Minimum.
+     * The Coupon Minimum.
      */
     public final double minimum;
     private boolean used;
@@ -51,7 +52,7 @@ public class Coupon extends Serializable
     }
 
     /**
-     * Is used boolean.
+     * Is Coupon used.
      *
      * @return the boolean
      */
@@ -60,7 +61,7 @@ public class Coupon extends Serializable
     }
 
     /**
-     * Can apply boolean.
+     * Can apply Coupon.
      *
      * @param price    the price
      * @param discount the discount
@@ -74,7 +75,7 @@ public class Coupon extends Serializable
     }
 
     /**
-     * Apply double.
+     * Apply Coupon.
      *
      * @param price    the price
      * @param discount the discount
@@ -89,7 +90,7 @@ public class Coupon extends Serializable
     }
 
     /**
-     * The enum Type.
+     * The Coupon enum Type.
      */
     public enum Type {
         /**

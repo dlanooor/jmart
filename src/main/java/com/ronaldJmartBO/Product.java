@@ -14,35 +14,35 @@ import com.ronaldJmartBO.dbjson.Serializable;
 public class Product extends Serializable
 {
     /**
-     * The Account id.
+     * The Product Account id.
      */
     public int accountId;
     /**
-     * The Category.
+     * The Product Category.
      */
     public ProductCategory category;
     /**
-     * The Condition used.
+     * The Product Condition.
      */
     public boolean conditionUsed;
     /**
-     * The Discount.
+     * The Product Discount.
      */
     public double discount;
     /**
-     * The Name.
+     * The Product Name.
      */
     public String name;
     /**
-     * The Price.
+     * The Product Price.
      */
     public double price;
     /**
-     * The Shipment plans.
+     * The Product Shipment plans.
      */
     public byte shipmentPlans;
     /**
-     * The Weight.
+     * The Product Weight.
      */
     public int weight;
 

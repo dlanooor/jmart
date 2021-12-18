@@ -21,11 +21,11 @@ import java.text.SimpleDateFormat;
 public class Complaint extends Serializable
 {
     /**
-     * The Date.
+     * The Complaint Date.
      */
     public final Date date;
     /**
-     * The Desc.
+     * The Complaint Desc.
      */
     public String desc;
 

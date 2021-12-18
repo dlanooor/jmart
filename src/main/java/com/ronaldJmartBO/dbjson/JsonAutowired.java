@@ -16,17 +16,17 @@ import java.lang.annotation.Target;
 @Target(value={ElementType.FIELD})
 public @interface JsonAutowired
 {
-	/**
-	 * Value class.
-	 *
-	 * @return the class
-	 */
-	Class<?> value();
+    /**
+     * Value class.
+     *
+     * @return the class
+     */
+    Class<?> value();
 
-	/**
-	 * Filepath string.
-	 *
-	 * @return the string
-	 */
-	String filepath();
+    /**
+     * Filepath string.
+     *
+     * @return the string
+     */
+    String filepath();
 }

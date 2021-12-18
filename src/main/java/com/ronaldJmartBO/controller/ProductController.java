@@ -19,13 +19,13 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController implements BasicGetController<Product>{
     /**
-     * The Product table.
+     * The Product table (get from .json file).
      */
     @JsonAutowired(value = Product.class, filepath = "F:\\Backup\\Kuliah\\Semester 5\\Praktikum\\[OOP] Pemrograman Berorientasi Objek\\jmart\\json\\product.json")
     public static JsonTable<Product> productTable;
 
     /**
-     * Create product.
+     * Create product response if have store.
      *
      * @param accountId     the account id
      * @param name          the name
@@ -73,7 +73,7 @@ public class ProductController implements BasicGetController<Product>{
     }
 
     /**
-     * Gets product filtered.
+     * Gets product that already filtered.
      *
      * @param page      the page
      * @param pageSize  the page size
@@ -103,6 +103,14 @@ public class ProductController implements BasicGetController<Product>{
         return Algorithm.paginate(list, page, pageSize, filter);
     }
 
+    /**
+     * Gets product that filtered by name.
+     *
+     * @param page     the page
+     * @param pageSize the page size
+     * @param search   the search
+     * @return the product filtered
+     */
     @GetMapping("/getFilteredName")
     List<Product> getProductFiltered(@RequestParam int page, @RequestParam int pageSize, @RequestParam String search) {
         Predicate<Product> filter = filtered -> filtered.name.toLowerCase().contains((search.toLowerCase()));
